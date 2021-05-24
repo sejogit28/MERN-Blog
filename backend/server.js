@@ -19,6 +19,13 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
+const blogPostRouter = require('./blogRoutes/blogPostRoute');
+//const usersRouter = require('./blogRoutes/userRoute');
+
+blogApp.use('/blogPost', blogPostRouter);
+//blogApp.use('/userRoute', usersRouter);
+
+
 blogApp.listen(blogPort, () => {
     console.log(`Mongo's Up on: ${blogPort}`);
 });
