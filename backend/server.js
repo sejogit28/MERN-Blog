@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');  
 
 require('dotenv').config();
@@ -9,6 +10,7 @@ const blogPort = process.env.PORT || 5000;
 
 blogApp.use(cors());
 blogApp.use(express.json());
+blogApp.use(cookieParser());
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}
@@ -29,3 +31,4 @@ blogApp.use('/blogPost', blogPostRouter);
 blogApp.listen(blogPort, () => {
     console.log(`Mongo's Up on: ${blogPort}`);
 });
+
