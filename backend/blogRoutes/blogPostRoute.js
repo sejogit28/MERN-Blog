@@ -109,13 +109,55 @@ router.put('/update/:postId/addcomm',(req, res)=>
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.put('/update/:postId/replyToComm/:commId',(req, res)=>
+{
+    blogPosts.findById(req.params.postId)
+    .then(bPost => 
+        {
+           const userName = req.body.userName;
+           const postfinder = req.params.postId;
+           const commBody = req.body.commBody;
+           const parentcommfinder = req.params.commId;
+            const posterImageUrl = req.body.posterImageUrl;
+
+           bPost.comments.push({
+               //The variable names must match the model names(Its case senstive)
+               userName,
+               postfinder,
+               commBody,
+               parentcommfinder,
+               posterImageUrl
+           })
+
+            bPost.save()
+        .then(() => res.json({message: {msgBody : "Reply comment added Bro!", msgError: false}}))
+        .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.put('/update/:postId/updateComm/:commId',(req, res)=>
+{
+    blogPosts.findById(req.params.postId)
+    .then(bPost => 
+        {
+            var currComm  = bPost.comments.find(o => o._id == req.params.commId);        
+            currComm.commBody = req.body.commBody;     
+
+        bPost.save()
+        .then(() => res.json({message: {msgBody : "Comment Updated Bro!", msgError: false}}))
+        .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
 router.put('/update/:postId/deleteComm/:commId',(req, res)=>
 {
     blogPosts.findById(req.params.postId)
     .then(bPost => 
         {
-            const deletedCommIndex = bPost.comments.findIndex(commIndex => commIndex._id === req.params.commId)
-            bPost.comments.slice(deletedCommIndex);
+            bPost.comments  = bPost.comments.filter(o => o._id != req.params.commId)            //bPost.comments.slice(deletedCommIndex);
         
 
         bPost.save()
