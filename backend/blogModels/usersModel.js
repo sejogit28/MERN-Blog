@@ -56,6 +56,8 @@ userSchema.methods.comparePassword = function(password,cb){
     })
 }
 
-const User = mongoose.model('User', userSchema);
+/*The first parameter is going to be(or already is) the name of the table in your 
+mongoDb cluster. It is not case sensitive*/
+const blogUser = mongoose.model('blogUser', userSchema);
 
-module.exports = User;
+module.exports = blogUser;

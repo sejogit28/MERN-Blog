@@ -22,10 +22,10 @@ connection.once('open', () => {
 })
 
 const blogPostRouter = require('./blogRoutes/blogPostRoute');
-//const usersRouter = require('./blogRoutes/userRoute');
+const registerRouter = require('./blogRoutes/registerRoutes');
 
 blogApp.use('/blogPost', blogPostRouter);
-//blogApp.use('/userRoute', usersRouter);
+blogApp.use('/entryPoint', registerRouter);
 
 
 blogApp.listen(blogPort, () => {
