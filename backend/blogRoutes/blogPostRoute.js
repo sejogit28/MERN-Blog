@@ -27,6 +27,19 @@ router.get('/blogList',(req, res) =>
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.get('/blogPagi', async (req, res) =>{
+    const PAGE_SIZE = 4;
+    const page = parseInt(req.query.page || "0") - 1;
+    const total = await blogPosts.countDocuments({});
+    const bPosts = await blogPosts.find({})
+    .limit(PAGE_SIZE)
+    .skip(PAGE_SIZE * page).sort({"createdAt": -1});
+    res.json({
+        totalBlogPages: Math.ceil(total / PAGE_SIZE),
+        bPosts,
+    });
+});
+
 router.get('/:id',(req, res) => {
     blogPosts.findById(req.params.id)
     .then(exercise => res.json(exercise))

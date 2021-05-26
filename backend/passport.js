@@ -7,7 +7,9 @@ const User = require('./blogModels/usersModel');
 const cookieExtractor = req => {
     let token = null;
     if(req && req.cookies){
-        token = req.cookies["access"];
+        token = req.cookies["access_token"];
+        /*if the string pass in the line above doesn't match what you called the token in 
+        other places. You'll be able to log in(on Postman) but not logout*/
     }
     return token;
 }
