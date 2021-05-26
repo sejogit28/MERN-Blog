@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const passportConfig = require('../passport');
-const User =  require('../blogModels/usersModel');
+const {OAuth2Client} = require('google-auth-library');
 const JWT = require('jsonwebtoken');
 const multer = require('multer');
+const blogUser = require('../blogModels/usersModel');
 
 
 const storage = multer.diskStorage({
@@ -41,15 +42,14 @@ router.post('/register',upload.single('userImage'), (req, res)=>{
         if(user)
             res.status(400).json({message: {msgBody : "Username is already taken", msgError: true}});
         else{
-            const newUser = new User(
+            const newUser = new blogUser(
                 {
                     username: username, 
                     password: password,
                     role: role, 
                     email: email, 
                     userImageUrl: filename
-                }
-                );
+                });
             newUser.save(err=>{
                 if(err)
                     res.status(500).json({message: {msgBody : "Error has occured at server after save", msgError: true}});
@@ -68,7 +68,70 @@ router.post('/login', passport.authenticate('local', {session : false}),(req, re
         res.cookie('access_token', token, {httpOnly: true, sameSite:true});
         res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl}})
     }
-})
+});
+
+const client = new OAuth2Client("909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.apps.googleusercontent.com");
+
+/*The commented out part(passport.authenticate...) was causing a 400 error. It doesn't appear
+ to be neccesary for the google OAUTH to work*/
+ 
+router.post('/googlelogin', /*passport.authenticate('local', {session : false}),*/ (req, res) => {
+    const {tokenId} = req.body;
+    client.verifyIdToken({idToken: tokenId, audience: "909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.apps.googleusercontent.com"}).then(response =>{
+        const{email_verified, name, email, picture, at_hash} = response.payload;
+        //console.log(response.payload);
+        console.log(name, email, picture, at_hash);
+        if(email_verified)
+        {
+            blogUser.findOne({email}, (err, user)=>{
+                if(err)
+                {
+                    res.status(500).json({message: {msgBody : "Error has occured at server: " + err, msgError: true}});
+                }
+                else
+                {
+                    if(user)
+                    {
+                       const {_id, username, role, userImageUrl, email} = user; 
+                       const token = signDaToken(_id);
+                        res.cookie('access_token', token, {httpOnly: true, sameSite:true});
+                        res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl},message:{msgError: false}})
+                    }
+                    else
+                    {
+                        const username = name;
+                        const password = at_hash;
+                        const role = "user";
+                        const email = email;
+                        const userImageUrl = picture;
+                        const newUser = new blogUser(
+                        {
+                            username, 
+                            password,
+                            role, 
+                            emaill, 
+                            userImageUrl
+                            
+                        });
+                        newUser.save(err=>{
+                            if(err)
+                                res.status(500).json({message: {msgBody : "Error has occured at server after save:" + err, msgError: true}});
+                            else
+                            {
+                                const {_id, username, role, userImageUrl, email} = newUser; 
+                                const token = signDaToken(_id);
+                                res.cookie('access_token', token, {httpOnly: true, sameSite:true});
+                                res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl}, message:{msgError: false}})
+                            }                       
+                         });
+                    }
+                }
+            });
+
+
+        }
+    })
+});
 
 router.get('/logout', passport.authenticate('jwt', {session: false}), (req, res)=>{
     res.clearCookie('access_token');
@@ -90,4 +153,7 @@ router.get('/authenticated', passport.authenticate('jwt', {session: false}), (re
    const{username, role, userImageUrl, email} = req.user;
    res.status(200).json({isAuthenticated: true, user : {username, role, userImageUrl, email}})
 });
+
+
+
 module.exports = router;

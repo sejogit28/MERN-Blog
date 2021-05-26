@@ -27,7 +27,7 @@ export default{
         console.log(info);
         return fetch('/entryPoint/googlelogin', 
         {
-            method: "post",
+            method: "POST",
             body: JSON.stringify(info),
             headers: 
             {

@@ -114,9 +114,10 @@ const Register = props =>
             <Divider />
 
             <Grid.Row>
+                
             <GoogleLogin
             clientId="909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.apps.googleusercontent.com"
-            buttonText="Sign in with your Google profile!"
+            buttonText="Sign Up/In with your Google profile!"
             onSuccess={successfulGoogle}
             onFailure={unSuccessfulGoogle}
             cookiePolicy={'single_host_origin'}
