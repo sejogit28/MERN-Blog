@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
         callback(null, 'C:/Users/Sean/Desktop/React/mern-blog/client/public/BlogPostImages');
     },
     filename: function(request, file, callback){
-        callback(null, Date.now() + file.originalname);
+        callback(null, Date.now() + file.originalname.replace(/\s+/g, ''));
     },
 })
 
@@ -165,7 +165,7 @@ router.put('/update/:postId/updateComm/:commId',(req, res)=>
 });
 
 
-router.put('/update/:postId/deleteComm/:commId',(req, res)=>
+router.put('/update/:postId/deletecomm/:commId',(req, res)=>
 {
     blogPosts.findById(req.params.postId)
     .then(bPost => 

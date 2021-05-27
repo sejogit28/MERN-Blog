@@ -79,6 +79,7 @@ const BlogPostSinglePage = props =>
         {
             socket.on('sendCommentToClient', msg =>
             {
+                console.log(msg);
                 setBlogPost(msg);
             })
             return () => socket.off('sendCommentToClient')

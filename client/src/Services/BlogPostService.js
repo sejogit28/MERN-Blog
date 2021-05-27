@@ -101,7 +101,7 @@ export default{
             that you want evrything to the left of theurl that is in the 
             browser window "posts/blogPost" example*/
             {
-              method: "post",
+              method: "put",
               body : JSON.stringify(newComm),
               headers: 
               {
@@ -122,7 +122,7 @@ export default{
         {
             return fetch('/blogPost/update/'+id+'/updatecomm/'+commId ,
             {
-                method: "post",
+                method: "put",
                 body : JSON.stringify(newCommBody),
                 headers: 
                 {
@@ -143,7 +143,7 @@ export default{
         {
             return fetch('/blogPost/update/'+id+'/deletecomm/'+commId,
             {
-                method: "post"
+                method: "put"
             }).then(res => 
             {
                 if(res.status !== 401)
