@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const commSchema = new Schema({
     username:{type: String, required:true, minlength: 2},
-    postfinder: {type: String, required:true, trim: true},
-    commBody:{type: String, required:true, trim: true},
-    parentcommfinder: {type: String, trim: true},
+    postfinder: {type: String, required:true},
+    commBody:{type: String, required:true},
+    parentcommfinder: {type: String},
     posterImageUrl: {type: String, trim: true}
 },  {
         timestamps: true,
@@ -14,8 +14,8 @@ const commSchema = new Schema({
 
 const blogPostSchema = new Schema({
     title:{type: String, required: true, trim: true, minlength: 3},
-    author:{type: String, required: true, trim: true},
-    summary:{type: String, required: true, trim: true, minlength: 15},
+    author:{type: String, required: true},
+    summary:{type: String, required: true, minlength: 15},
     body:{type: String, required: true, minlength: 50},
     imageUrl:{type: String, required: true, default: "placeHolder.jpg"},
     readTime:{type:Number, required:true},

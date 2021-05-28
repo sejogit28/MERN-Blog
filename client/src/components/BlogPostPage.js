@@ -79,8 +79,7 @@ const BlogPostSinglePage = props =>
         {
             socket.on('sendCommentToClient', msg =>
             {
-                console.log(msg);
-                setBlogPost(msg);
+                setBlogPost({...msg});
             })
             return () => socket.off('sendCommentToClient')
         }
@@ -225,7 +224,7 @@ const cssTrick = idValue =>
             
             {
                 blogPost.comments &&
-            blogPost.comments.slice().reverse().map(comm =>
+            blogPost.comments.slice().reverse().map((comm) =>
                (! comm.parentcommfinder &&
                   /*IMPORTANT, in order for this to work the props MUST be passed down correctly
                     https://github.com/jaewonhimnae/react-youtube-clone/blob/master/client/src/components/views/DetailVideoPage/DetailVideoPage.js
@@ -246,7 +245,7 @@ const cssTrick = idValue =>
                      socket={socket}
                      />
                      <BlogPostSinglePageReplyComm //aka ReplyComment
-                     key={comm._id} 
+                     
                      postComments={blogPost.comments}
                      comm={comm}
                      user={user} 

@@ -59,7 +59,7 @@ const BlogPostSinglePageComment = props =>
                 {
                     
                     props.setBlogPost(editedData);
-                    
+                    commActionTriggerFunc();
                 })
             
         })
@@ -154,13 +154,13 @@ const BlogPostSinglePageComment = props =>
            if(commUsernameInput === commUsername)
            {        
                 BlogPostService.deleteComment(postId, commId)
-                .then(data => 
+                .then(async data => 
                         {
                             console.log(data);    
-                            BlogPostService.getBlogPost(postId)
-                            .then(deleteddata => {
-                            props.setBlogPost(deleteddata);
-            
+                            await BlogPostService.getBlogPost(postId)
+                            .then(async deleteddata => {
+                            await props.setBlogPost(deleteddata);
+                            
                         });
                             
                         });

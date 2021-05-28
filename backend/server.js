@@ -11,7 +11,7 @@ const blogApp = express();
 const blogPort = process.env.PORT || 5000;
 
 const http = require('http').Server(blogApp);
-
+const io = require('socket.io')(http);
 
 blogApp.use(cors());
 blogApp.use(express.json());
@@ -27,35 +27,43 @@ connection.once('open', () => {
 })
 
 
-const io = require('socket.io')(http);
+
 let users = [];
 io.on('connection', socket => {
    console.log(socket.id + ' connected bro!')
     
-    socket.on('joinRoom', id => {
-        const user = {userId: socket.id, room: id}
-        users.push(user)
+    socket.on('joinRoom', async id => {
+        const user = {userId: socket.id, room: id};
+        console.log("newUser: "+ user.room);
+        
 
         const check = users.every(user => user.userId !== socket.id);
 
         if(check){
             users.push(user)
-            socket.join(user.room)
+            await socket.join(user.room)
         }
         else{
 
-            users.map(user => {
+            users.map(async user => {
             if(user.userId === socket.id){
                 if(user.room !== id){
-                    socket.leave(user.room)
-                    socket.join(id)
-                    user.room = id
+                    await socket.leave(user.room);
+                    await socket.join(id);
+                    user.room = id;
                 }
             }
         })
         }
         
     })
+
+   
+        
+            console.log(users)
+
+        
+    //console.log(socket.adapter.rooms)
 
     socket.on('createComment',  async msg => {
         const {commBody, postfinder, username, parentcommfinder, posterImageUrl} = msg;
@@ -70,16 +78,23 @@ io.on('connection', socket => {
 
                 await currPost.save()
                 console.log(postfinder)
-                io.emit('sendCommentToClient', currPost)
-        }
+                await io.to(postfinder).emit('sendCommentToClient', currPost)
+        
             
         
 
-        //const newBlogComment = new Comment 
+    
+        }
     })
-
     socket.on('disconnect', ()=>{
         console.log(socket.id + ' disconnected bro')
+        users.forEach(user =>
+        
+            console.log("user : " + user.room)
+
+        );
+        
+        console.log(socket.adapter.rooms)
     })
 })
 

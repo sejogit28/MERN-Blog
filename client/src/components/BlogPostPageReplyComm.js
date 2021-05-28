@@ -42,7 +42,7 @@ const BlogPostSinglePageReplyComm = props =>
                         socket={props.socket}
                         />
                         <BlogPostSinglePageReplyComm //aka ReplyComment
-                        key={comm._id} 
+                       
                         comm={comm} 
                         postComments={props.postComments}
                         user={props.user} 

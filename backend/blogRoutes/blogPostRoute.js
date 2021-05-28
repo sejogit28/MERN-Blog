@@ -165,9 +165,9 @@ router.put('/update/:postId/updateComm/:commId',(req, res)=>
 });
 
 
-router.put('/update/:postId/deletecomm/:commId',(req, res)=>
+router.put('/update/:postId/deletecomm/:commId', async (req, res)=>
 {
-    blogPosts.findById(req.params.postId)
+    await blogPosts.findById(req.params.postId)
     .then(bPost => 
         {
             bPost.comments  = bPost.comments.filter(o => o._id != req.params.commId)            //bPost.comments.slice(deletedCommIndex);
