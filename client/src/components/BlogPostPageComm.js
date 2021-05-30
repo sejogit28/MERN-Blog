@@ -1,8 +1,9 @@
-import React, {useState, useEffect}from 'react';
+import React, {useState, useEffect, useRef}from 'react';
 import {Comment, Button, Form} from 'semantic-ui-react';
 import moment from 'moment';
 
 import BlogPostService from '../Services/BlogPostService';
+import PopupMessage from './PopupMessage';
 
 
 const BlogPostSinglePageComment = props => 
@@ -10,7 +11,8 @@ const BlogPostSinglePageComment = props =>
     const[commActionTrigger, setCommActionTrigger] = useState(false);
     const [editCommTrigger, setEditCommTrigger] = useState(false);
     const [editCommValue, setEditCommValue] = useState({commBody: props.comm.commBody});
-   
+    let timerID = useRef(null);
+
     const [replyCommTrigger, setReplyCommTrigger] = useState(false);
     const [replyCommValue, setReplyCommValue] = useState(
         {
@@ -20,7 +22,17 @@ const BlogPostSinglePageComment = props =>
             postfinder: props.postId,
             posterImageUrl: props.user.userImageUrl
         })
-  
+
+    const [commMessage, setCommMessage] = useState(
+        {
+            icon: "",
+            hidden: true,
+            positive: false,
+            negative: false,
+            header: "",
+            content: ""
+        });
+
   useEffect(() => 
     {
         if(props.socket)
@@ -49,22 +61,54 @@ const BlogPostSinglePageComment = props =>
         
        console.log(editCommValue, id, commid );
         //setEditCommTrigger(!editCommTrigger);
-        setEditCommTrigger(false);
-        BlogPostService.editComment(id, commid, editCommValue)
-        .then(data => {
+
+        if(editCommValue.commBody === "")
+        {
+            setCommMessage({
+                icon: "x",
+                hidden: false,
+                negative: true,
+                header: "Error, comment not posted",
+                content: "Comment body must have atleast one character"
+
+            })
             
-            console.log(data)
-            BlogPostService.getBlogPost(id)
-            .then(editedData => 
+        }
+        else
+        {
+            setCommMessage({
+                icon: "check circle outline",
+                hidden: false,
+                positive: true,
+                header: "Comment Edited!",          
+            })
+
+            timerID = setTimeout(()=>
+            {
+                dismissReplyCommMessage();
+            }, 4000)
+
+            
+            BlogPostService.editComment(id, commid, editCommValue)
+            .then(data => {
+            
+                console.log(data)
+                BlogPostService.getBlogPost(id)
+                .then(editedData => 
                 {
                     
                     props.setBlogPost(editedData);
+                    /*Putting the line below in the api call gave the UI time to render the 
+                    success messae before the edit Comm Form was closed*/
+                    setEditCommTrigger(false);
                     commActionTriggerFunc();
                 })
             
-        })
+            })
         
         setEditCommValue(editCommValue);
+        }
+        
         
     }
     const commActionTriggerFunc = () => 
@@ -125,6 +169,19 @@ const BlogPostSinglePageComment = props =>
             
     } */
 
+    const dismissReplyCommMessage = () => 
+    {
+        setCommMessage(
+        {
+            icon: "",
+            hidden: true,
+            positive: false,
+            negative: false,
+            header: "",
+            content: ""
+        })
+    }
+
     const onCommSubmit = e => 
     {
         
@@ -135,10 +192,46 @@ const BlogPostSinglePageComment = props =>
         console.log(replyCommValue);
         const {commBody, postfinder, username, parentcommfinder,posterImageUrl} = replyCommValue;
 
-        props.socket.emit('createComment', 
+        if (commBody === "")
         {
-            commBody, postfinder, username, parentcommfinder, posterImageUrl
-        })
+            setCommMessage({
+                icon: "x",
+                hidden: false,
+                negative: true,
+                header: "Error, comment not posted",
+                content: "Comment body must have atleast one character"
+
+            })
+            e.target.reset(); 
+        }
+        else
+        {
+            props.socket.emit('createComment', 
+            {
+                commBody, postfinder, username, parentcommfinder, posterImageUrl
+            })
+
+            setCommMessage({
+                icon: "check circle outline",
+                hidden: false,
+                positive: true,
+                header: "Reply Comment Posted",          
+            })
+
+            timerID = setTimeout(()=>
+            {
+                dismissReplyCommMessage();
+            }, 4000)
+
+            setReplyCommValue(
+            {
+                username : props.user.username,
+                commBody : "",
+                postfinder: props.postId,
+                posterImageUrl: props.user.userImageUrl
+            });
+        }
+        
         
            e.target.reset(); 
            
@@ -214,6 +307,7 @@ const BlogPostSinglePageComment = props =>
                        
                                 {
                                     editCommTrigger &&
+                                    <>
                                         <Form  onSubmit={() => editCommentSubmit(props.comm.postfinder, props.comm._id)}>
                                             <Form.TextArea 
                                             placeholder="Input your updated comment!!"
@@ -226,10 +320,22 @@ const BlogPostSinglePageComment = props =>
                                                 Edit your Comment
                                             </Button>
                                         </Form> 
+                                        <PopupMessage
+                                            onDismiss={()=>{dismissReplyCommMessage()}}
+                                            hidden={commMessage.hidden}
+                                            positive={commMessage.positive}
+                                            negative = {commMessage.negative}
+                                            floating
+                                            icon={commMessage.icon}
+                                            header={commMessage.header}
+                                            content={commMessage.content}
+                                        />
+                                    </>
                                 } 
 
                                 {
                                     replyCommTrigger &&
+                                    <>
                                         <Form onSubmit={onCommSubmit}>
                                             <Form.TextArea 
                                             placeholder="Type your reply"
@@ -241,6 +347,17 @@ const BlogPostSinglePageComment = props =>
                                                 Reply to Comment
                                             </Button>
                                         </Form> 
+                                        <PopupMessage
+                                            onDismiss={()=>{dismissReplyCommMessage()}}
+                                            hidden={commMessage.hidden}
+                                            positive={commMessage.positive}
+                                            negative = {commMessage.negative}
+                                            floating
+                                            icon={commMessage.icon}
+                                            header={commMessage.header}
+                                            content={commMessage.content}
+                                        />
+                                    </>
                                 }  
 
 

@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext}from 'react';
-import { Grid, Segment, Header, Comment, Icon, Form, Button, Divider} from 'semantic-ui-react';
+import React, {useEffect, useState, useContext, useRef}from 'react';
+import { Grid, Segment, Header, Comment, Icon, Form, Button, Divider, Message} from 'semantic-ui-react';
 import {Link} from 'react-router-dom'
 import io from 'socket.io-client';
 //import { convertFromRaw} from 'draft-js';
@@ -9,6 +9,7 @@ import {AuthContext} from '../context/AuthContext';
 import BlogPostService from '../Services/BlogPostService';
 import BlogPostSinglePageComment from './BlogPostPageComm';
 import BlogPostSinglePageReplyComm from './BlogPostPageReplyComm';
+import PopupMessage from './PopupMessage';
 
 
 
@@ -18,7 +19,7 @@ const BlogPostSinglePage = props =>
 
     const{isAuthenticated, user} = useContext(AuthContext);
     const[socket, setSocket] = useState(null);
-
+    let timerID = useRef(null);
     const [blogPost, setBlogPost] = useState(
         {
         createdAt:"",
@@ -26,15 +27,39 @@ const BlogPostSinglePage = props =>
         });
         /*The comments array and createdAt var are intialized to avoid an error since
         the data isn't loaded fastenough(asynchronically) */
+
     
+
     const [commValue, setCommValue] = useState(
+    {
+        username : user.username,
+        commBody : "",
+        postfinder: props.match.params.id,
+        posterImageUrl: user.userImageUrl
+    });
+        
+    const [commMessage, setCommMessage] = useState(
+    {
+        icon: "",
+        hidden: true,
+        positive: false,
+        negative: false,
+        header: "",
+        content: ""
+    });
+
+    const dismissCommMessage = () => 
+    {
+        setCommMessage(
         {
-            username : user.username,
-            commBody : "",
-            postfinder: props.match.params.id,
-            posterImageUrl: user.userImageUrl
-        });
-     
+            icon: "",
+            hidden: true,
+            positive: false,
+            negative: false,
+            header: "",
+            content: ""
+        })
+    }
 
     useEffect(() => 
     {      
@@ -143,11 +168,36 @@ const BlogPostSinglePage = props =>
         console.log(commValue);
         const {commBody, postfinder, username, parentcommfinder, posterImageUrl} = commValue;
 
-        socket.emit('createComment', 
+        if (commBody === "")
         {
-            commBody, postfinder, username, parentcommfinder, posterImageUrl
-        })
+            setCommMessage({
+                icon: "x",
+                hidden: false,
+                negative: true,
+                header: "Error, comment not posted",
+                content: "Comment body must have atleast one character"
 
+            })
+            e.target.reset(); 
+        }
+        else
+        {
+            socket.emit('createComment', 
+            {
+                commBody, postfinder, username, parentcommfinder, posterImageUrl
+            })
+
+            setCommMessage({
+                icon: "check circle outline",
+                hidden: false,
+                positive: true,
+                header: "Comment Posted",          
+            })
+
+            timerID = setTimeout(()=>
+            {
+                dismissCommMessage();
+            }, 2000)
 
        /*  BlogPostService.addComment(props.match.params.id, commValue)
         .then(data => 
@@ -168,9 +218,18 @@ const BlogPostSinglePage = props =>
                 
             }); */
         
+            setCommValue(
+                {
+                    username : user.username,
+                    commBody : "",
+                    postfinder: props.match.params.id,
+                    posterImageUrl: user.userImageUrl
+                });
            e.target.reset(); 
            /*This WAS needed to reset the form since you're WERENT using useState for the 
            onChange BEFORE. Now it's just a less verbose way of resetting the comm form*/
+        }
+        
             
     }
 
@@ -208,7 +267,7 @@ const cssTrick = idValue =>
         {!isAuthenticated ? LoggedOutCommMessage() : LoggedInCommMessage() }
 
          
-        {isAuthenticated?
+        {isAuthenticated &&
           <Form  onSubmit={onCommSubmit}>
                 <Form.TextArea 
                     placeholder="Post A Comment!!"
@@ -219,7 +278,19 @@ const cssTrick = idValue =>
                 <Button fluid color="black" type='submit'>
                     Post a Comment
                 </Button>
-            </Form> : null
+                <PopupMessage
+                    onDismiss={()=>{dismissCommMessage()}}
+                    hidden={commMessage.hidden}
+                    positive={commMessage.positive}
+                    negative = {commMessage.negative}
+                    floating
+                    icon={commMessage.icon}
+                    header={commMessage.header}
+                    content={commMessage.content}
+                />
+
+            </Form>  
+           
         }
             
             {
@@ -243,6 +314,7 @@ const cssTrick = idValue =>
                      isAuthenticated={isAuthenticated}
                      onCommSubmit={onCommSubmit}
                      socket={socket}
+                     dismissCommMessage={dismissCommMessage}
                      />
                      <BlogPostSinglePageReplyComm //aka ReplyComment
                      
@@ -256,6 +328,7 @@ const cssTrick = idValue =>
                      setBlogPost={setBlogPost}
                      onCommSubmit={onCommSubmit}
                      socket={socket}
+                     dimissCommMessage={dismissCommMessage}
                      />
                      {/* <br></br> */}
                      <Divider/>
