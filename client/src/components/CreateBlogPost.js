@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import {Grid, Form, Button, Divider} from 'semantic-ui-react';
 //import { EditorState, convertToRaw, getDefaultKeyBinding, RichUtils} from 'draft-js';
 import 'draft-js/dist/Draft.css';
@@ -10,7 +10,7 @@ import 'medium-editor/dist/css/themes/default.css'
 
 //import MyEditor from '../components/CreateBlogPostEditor';
 import BlogPostService from '../Services/BlogPostService';
-import Message from './Message';
+import PopupMessage from './PopupMessage';
 import { AuthContext } from '../context/AuthContext';
 
 
@@ -28,7 +28,30 @@ const CreateBlogPostPage = props =>
     const [tags, setTags] = useState([]);
     const [file, setFile] = useState("");
 
-    const[message, setMessage] = useState(null);
+    const [message, setMessage] = useState(
+    {
+        icon: "",
+        hidden: true,
+        positive: false,
+        negative: false,
+        header: "",
+        content: ""
+    });
+    let timerID = useRef(null);
+
+
+    const dismissMessage = () => 
+    {
+        setMessage(
+        {
+            icon: "",
+            hidden: true,
+            positive: false,
+            negative: false,
+            header: "",
+            content: ""
+        })
+    }
     const authContext = useContext(AuthContext);
 
     const onCheckBoxChange = e => 
@@ -63,6 +86,8 @@ const CreateBlogPostPage = props =>
     {
         setFile(e.target.files[0]);
     }
+
+
     const onSubmitForm = e => 
     {
        //const edited = convertToRaw(editorState.getCurrentContent());
@@ -71,43 +96,55 @@ const CreateBlogPostPage = props =>
         e.preventDefault();
         const formData = new FormData();
        
-        formData.append("title", title);
-        formData.append("author", author);
-        formData.append("summary", summary);
-        formData.append("body", /* JSON.stringify(edited) */ body);
-        formData.append("readTime", readTime);
-        formData.append('blogImage', file);
-        tags.forEach(item =>
-            {
-            formData.append('tags', item);
-            });
-        
-
-        
-        console.log(file);
-        console.log(...formData);
-        BlogPostService.addBlogPost(formData).then(data =>
-            {
-                
-                console.log(data);
-                const {message} = data;
-                if(! message.msgError)
-                {
-                    setMessage(message);
-                    props.history.push('/');
-                }
-                else if(message.msgBody === "UnAuthorized")
-                {
-                    setMessage(message);
-                    authContext.setUser({username: "", role: ""});
-                    authContext.setIsAuthenticated(false);
-                }
-                else
-                {
-                    setMessage(message);
-                }
+        if(body === "")
+        {
+            setMessage({
+                icon: "x",
+                hidden: false,
+                negative: true,
+                header: "Error, comment not posted",
+                content: "Comment body must have atleast one character"
 
             })
+            
+        }
+        else
+        {
+            formData.append("title", title);
+            formData.append("author", author);
+            formData.append("summary", summary);
+            formData.append("body", /* JSON.stringify(edited) */ body);
+            formData.append("readTime", readTime);
+            formData.append('blogImage', file);
+            tags.forEach(item =>
+                {
+                formData.append('tags', item);
+                });
+        
+
+        
+            console.log(file);
+            console.log(...formData);
+
+            setMessage({
+                icon: "check circle outline",
+                hidden: false,
+                positive: true,
+                header: "Article Posted!!!",          
+            })
+
+            timerID = setTimeout(()=>
+            {
+                dismissMessage();
+            }, 2000)
+
+            BlogPostService.addBlogPost(formData).then(data =>
+                {              
+                    console.log(data);               
+                    props.history.push('/');                      
+                })
+
+        }
     }
  
 
@@ -166,12 +203,25 @@ const CreateBlogPostPage = props =>
                 onChange={(e) => setBody(e.target.value)}
                 /> */}
 
+                <br/>
                 <Editor
               
                 text={body}
                 onChange={(body) => setBody(body)}
                 />
-                               
+
+                <PopupMessage
+                    onDismiss={()=>{dismissMessage()}}
+                    hidden={message.hidden}
+                    positive={message.positive}
+                    negative = {message.negative}
+                    floating
+                    icon={message.icon}
+                    header={message.header}
+                    content={message.content}
+                />
+
+                <br/>            
                {/* <MyEditor onChange={setEditorState} editorState={editorState} /> */}
 
                 <Form.Input 
@@ -212,9 +262,7 @@ const CreateBlogPostPage = props =>
              </Grid.Row>         
      
 
-        <Grid.Row>
-            {message ? <Message message={message}/> : null }
-        </Grid.Row>
+       
         </Grid>
         
         </>

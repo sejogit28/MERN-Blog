@@ -270,6 +270,7 @@ const cssTrick = idValue =>
         {isAuthenticated &&
           <Form  onSubmit={onCommSubmit}>
                 <Form.TextArea 
+                    required
                     placeholder="Post A Comment!!"
                     type="text"
                     name="commBody"     

@@ -43,10 +43,10 @@ const BlogMainPage = () =>
                 {
                     return(
                         
-                            <React.Fragment key={blogPosts._id}>
-                            <BlogCard   fluidTrue={true} blogpost={blogpost}/>
+                            <React.Fragment key={blogpost._id}>
+                            <BlogCard  fluidTrue={true} blogpost={blogpost}/>
                         
-                            <Divider></Divider>
+                            <Divider ></Divider>
                             </React.Fragment>
                         
                     )
