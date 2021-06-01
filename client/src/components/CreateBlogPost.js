@@ -94,22 +94,23 @@ const CreateBlogPostPage = props =>
         //console.log(edited);
         console.log(tags);
         e.preventDefault();
-        const formData = new FormData();
+        
        
-        if(body === "")
+        if(body.length <= 50)
         {
-            setMessage({
+            setMessage(
+            {
                 icon: "x",
                 hidden: false,
                 negative: true,
-                header: "Error, comment not posted",
-                content: "Comment body must have atleast one character"
-
-            })
+                header: "Error, article not posted",
+                content: "Article body must have atleast fifty character"
+            });
             
         }
         else
         {
+            const formData = new FormData();
             formData.append("title", title);
             formData.append("author", author);
             formData.append("summary", summary);
@@ -130,7 +131,7 @@ const CreateBlogPostPage = props =>
                 icon: "check circle outline",
                 hidden: false,
                 positive: true,
-                header: "Article Posted!!!",          
+                header: "Article Edited!!!",          
             })
 
             timerID = setTimeout(()=>
@@ -139,10 +140,10 @@ const CreateBlogPostPage = props =>
             }, 2000)
 
             BlogPostService.addBlogPost(formData).then(data =>
-                {              
-                    console.log(data);               
-                    props.history.push('/');                      
-                })
+            {              
+                console.log(data);               
+                props.history.push('/');                      
+            })
 
         }
     }
@@ -210,16 +211,7 @@ const CreateBlogPostPage = props =>
                 onChange={(body) => setBody(body)}
                 />
 
-                <PopupMessage
-                    onDismiss={()=>{dismissMessage()}}
-                    hidden={message.hidden}
-                    positive={message.positive}
-                    negative = {message.negative}
-                    floating
-                    icon={message.icon}
-                    header={message.header}
-                    content={message.content}
-                />
+                
 
                 <br/>            
                {/* <MyEditor onChange={setEditorState} editorState={editorState} /> */}
@@ -253,6 +245,16 @@ const CreateBlogPostPage = props =>
                     <Form.Field label='Nutrition' name='Nutrition' value='Nutrition' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                 </Form.Group>
 
+                <PopupMessage
+                    onDismiss={()=>{dismissMessage()}}
+                    hidden={message.hidden}
+                    positive={message.positive}
+                    negative = {message.negative}
+                    floating
+                    icon={message.icon}
+                    header={message.header}
+                    content={message.content}
+                />
 
                 <Button primary type='submit'>
                     Create A Post!!

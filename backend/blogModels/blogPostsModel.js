@@ -16,7 +16,7 @@ const blogPostSchema = new Schema({
     title:{type: String, required: true, trim: true, minlength: 3},
     author:{type: String, required: true},
     summary:{type: String, required: true, minlength: 15},
-    body:{type: String, required: true, minlength: 50},
+    body:{type: String, required: true, minlength: 50, trim: true},
     imageUrl:{type: String, required: true, default: "placeHolder.jpg"},
     readTime:{type:Number, required:true},
     tags: {type: Array},

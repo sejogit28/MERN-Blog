@@ -1,18 +1,17 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {Grid, Form, Button, Divider} from 'semantic-ui-react';
 import Editor from 'react-medium-editor';
 import 'medium-editor/dist/css/medium-editor.css'
 import 'medium-editor/dist/css/themes/default.css'
 
 import BlogPostService from '../Services/BlogPostService';
-import Message from './Message';
+import PopupMessage from './PopupMessage';
 import { AuthContext } from '../context/AuthContext';
 
 
 
 const EditBlogPostPage = props => 
 {   
-    const[message, setMessage] = useState(null);
 
     const authContext = useContext(AuthContext);
 
@@ -34,7 +33,32 @@ const EditBlogPostPage = props =>
     const tagOptions = ['Exercise', 'Memory', 'Neuroplasticity', 'Sleep', 
                         'Learning', 'Emotion', 'Nutrition'];
         
+    const [message, setMessage] = useState(
+    {
+        icon: "",
+        hidden: true,
+        positive: false,
+        negative: false,
+        header: "",
+        content: ""
+    });
+    let timerID = useRef(null);
 
+
+    const dismissMessage = () => 
+    {
+        setMessage(
+        {
+            icon: "",
+            hidden: true,
+            positive: false,
+            negative: false,
+            header: "",
+            content: ""
+        })
+    }
+
+    
     const id = props.match.params.id;
 
    
@@ -99,49 +123,64 @@ const EditBlogPostPage = props =>
     
     const onSubmitForm = e => 
     {
-
         e.preventDefault();
-        const formData = new FormData();
+
+        if(body.length < 50)
+        /*Need to remeber that when the body is stored in the DB its format 
+        changes and this change alters the character count*/
+        {
+
+            setMessage({
+                icon: "x",
+                hidden: false,
+                negative: true,
+                header: "Error, article not posted",
+                content: "Article body must have atleast fifty character"
+
+            })
+
+        }
+        else
+        {
+            const formData = new FormData();
        
-        formData.append("title", title);
-        formData.append("author", author);
-        formData.append("summary", summary);
-        formData.append("body", body);
-        formData.append("readTime", readTime);
-        //formData.append("imageUrl", imageUrl);
-        formData.append('blogImage', file);
-        tags.forEach(item =>
+            formData.append("title", title);
+            formData.append("author", author);
+            formData.append("summary", summary);
+            formData.append("body", body);
+            formData.append("readTime", readTime);
+            //formData.append("imageUrl", imageUrl);
+            formData.append('blogImage', file);
+            tags.forEach(item =>
             {
-            formData.append('tags', item);
+                formData.append('tags', item);
             });
         
 
-        console.log(...formData);
-        
-        BlogPostService.editBlogPost(id, formData).then(data =>
+            console.log(...formData);
+            
+            setMessage(
             {
-            //need to revisit and fix
-            const {message} = data;
-            setMessage(message);
-              console.log(data);
-                
-                if(! message.msgError)
-                {
-                    setMessage(message);
-                    props.history.push('/admin');
-                }
-                else if(message.msgBody === "UnAuthorized")
-                {
-                    setMessage(message);
-                    authContext.setUser({username: "", role: ""});
-                    authContext.setIsAuthenticated(false);
-                }
-                else
-                {
-                    setMessage(message);
-                }
-
+                icon: "check circle outline",
+                hidden: false,
+                positive: true,
+                header: "Article Posted!!!",          
             })
+
+            timerID = setTimeout(()=>
+            {
+                dismissMessage();
+            }, 4000)
+
+            BlogPostService.editBlogPost(id, formData).then(data =>
+            {
+
+                console.log(data);
+                props.history.push('/admin');                 
+            })
+        }
+        
+        
     }
  
 
@@ -195,13 +234,28 @@ const EditBlogPostPage = props =>
                 onChange={(e) => setSummary(e.target.value)}
                 value={summary}
                 />
-
-                <Editor
-              
-                text={body}
-                onChange={(body) => setBody(body)}
                 
+                <br/>
+                
+                <Editor             
+                text={body}
+                onChange={(body) => setBody(body)}               
                 />
+
+                {/* Needs to be moved to a see-able place */}
+                <PopupMessage
+                    id="scrollWhenShown"
+                    onDismiss={()=>{dismissMessage()}}
+                    hidden={message.hidden}
+                    positive={message.positive}
+                    negative = {message.negative}
+                    floating
+                    icon={message.icon}
+                    header={message.header}
+                    content={message.content}
+                />
+                
+                <br/>
 
                 {/* <Form.TextArea 
                 label="Body"
@@ -271,18 +325,13 @@ const EditBlogPostPage = props =>
                     })}
                      <br/>
                 </Form.Group>
-
+                
                 <Button type='submit' color="black">
                     Edit This Post
                 </Button>
                    </Form>
                 </Grid.Column>
              </Grid.Row>         
-     
-
-        <Grid.Row>
-            {message ? <Message message={message}/> : null }
-        </Grid.Row>
         </Grid>
         </>
     );
