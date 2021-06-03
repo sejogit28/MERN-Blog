@@ -54,15 +54,38 @@ export default{
                 });            
         },
 
-        editBlogPost : (id, formData) =>
+        editBlogPostNoPic : (id, editedBlogPost) =>
         {
-            return fetch('/blogPost/update/'+id,
+            return fetch('/blogPost/updateNoPic/'+id,
             {
               method: "put",
               /*This needed to be specified as a put method, most likely cause thats 
               what it was called in the blogPostRoute */
-              body : formData,
+              body : JSON.stringify(editedBlogPost),
+              headers: 
+              {
+                  'Content-Type' : 'application/json'
+              }
              
+          }).then(res => 
+            {
+                if(res.status !== 401)
+                {
+                    return res.json().then(data => data);
+                }
+                 else
+                        return {message :{msgBody: "UnAuthorized "}, msgError : true};
+                });  
+        },
+
+        editBlogPostPic : (id, editedBlogPostPicFormData) =>
+        {
+            return fetch('/blogPost/updatePic/'+id,
+            {
+              method: "PUT",
+              /*This needed to be specified as a put method, most likely cause thats 
+              what it was called in the blogPostRoute */
+              body : editedBlogPostPicFormData,           
           }).then(res => 
             {
                 if(res.status !== 401)

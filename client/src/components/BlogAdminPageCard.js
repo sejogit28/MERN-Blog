@@ -56,11 +56,21 @@ const BlogAdminCard = props =>
                          <Button color="green">
                         <Link to={"posts/"+props.blogpost._id}>View</Link>
                         </Button>
+
                         <Button.Or />
+
                         <Button color="yellow">
                         <Link to={"edit/"+props.blogpost._id}>Edit</Link>
                         </Button>
-                         <Button.Or />
+
+                        <Button.Or />
+
+                        <Button color="yellow">
+                        <Link to={"editPic/"+props.blogpost._id}>Change Pic</Link>
+                        </Button>
+
+                        <Button.Or />
+
                         <Button color="red" onClick={deleteBlogPostFunc}>
                         Delete 
                         </Button>

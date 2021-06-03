@@ -168,7 +168,9 @@ const BlogPostSinglePage = props =>
         console.log(commValue);
         const {commBody, postfinder, username, parentcommfinder, posterImageUrl} = commValue;
 
-        if (commBody === "")
+        const oneCharNoWhiteSpaceRegex = /([a-zA-Z])+([ -~])*/;
+
+        if (commBody === "" || oneCharNoWhiteSpaceRegex.test(commBody) === false)
         {
             setCommMessage({
                 icon: "x",

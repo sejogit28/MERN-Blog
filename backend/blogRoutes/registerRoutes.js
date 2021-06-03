@@ -104,6 +104,7 @@ router.post('/googlelogin', /*passport.authenticate('local', {session : false}),
                         const role = "user";
                         const email = email;
                         const userImageUrl = picture;
+                        
                         const newUser = new blogUser(
                         {
                             username, 

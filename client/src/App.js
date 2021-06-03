@@ -15,6 +15,7 @@ import UnPrivateRoute from './hocs/UnPrivateRoute';
 
 import 'semantic-ui-css/semantic.min.css';
 import EditBlogPostPage from './components/EditBlogPost';
+import EditBlogPostPicture from './components/EditBlogPostPicture';
 
 function App() {
   /*Adding "blogPost"(posts) before the path for the BlogPostSinglePage helped
@@ -31,6 +32,7 @@ function App() {
           {/* <Route exact path="/create" component={CreateBlogPostPage} /> */}
           <PrivateRoute path='/edit/:id' roles={["admin"]} component={EditBlogPostPage} />
           {/* <Route exact path="/edit/:id" component={EditBlogPostPage} /> */}
+          <PrivateRoute path='/editPic/:id' roles={["admin"]} component={EditBlogPostPicture} />
           <PrivateRoute path='/admin' roles={["admin"]} component={BlogAdminPage} />
           {/* <Route exact path="/admin" component={BlogAdminPage} /> */}
           <UnPrivateRoute path='/login' component={Login}/>

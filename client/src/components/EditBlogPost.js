@@ -16,19 +16,30 @@ const EditBlogPostPage = props =>
     const authContext = useContext(AuthContext);
 
 
+    const[editedBlogPost, setEditedBlogPost] = useState(
+        {
+            title: "",
+            author: "",
+            summary:"",
+            body: "",
+            imageUrl: "",
+            readTime: 0, 
+            date: new Date(),
+            tags: []
 
-    const [title, setTitle] = useState("");
+        })
+    /* const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [summary, setSummary] = useState("");
     const [body, setBody] = useState("");
     /* const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
         ); */
-    const [imageUrl, setImageUrl] = useState("");
+    /* const [imageUrl, setImageUrl] = useState("");
     const [readTime, setReadTime] = useState("");
     const [file, setFile] = useState();
     const[date, setDate] = useState(new Date())
-    const[tags, setTags] = useState([]);
+    const[tags, setTags] = useState([]);  */
     
     const tagOptions = ['Exercise', 'Memory', 'Neuroplasticity', 'Sleep', 
                         'Learning', 'Emotion', 'Nutrition'];
@@ -67,28 +78,36 @@ const EditBlogPostPage = props =>
         BlogPostService.getBlogPost(id)
         .then(data=>{
                 //You don't need to pass the id here, prob cause you get it from the params
-                setTitle(data.title);
+                
+                setEditedBlogPost(data);
+                /* setTitle(data.title);
                 setAuthor(data.author);
                 setSummary(data.summary);
                 setBody(data.body);
                 setImageUrl(data.imageUrl);
-                setDate(data.date);
+                setDate(data.date); */
                 /*If one of the fields the server is looking for isn't included, the server 
                 will return an error. However, with the makeup of this project, that error 
                 will be shown in the console as happening at the BlogPostService.
                 (date : data.date example)*/
-                setTags(data.tags);
-                setReadTime(Number(data.readTime));
+
+                /* setTags(data.tags);
+                setReadTime(Number(data.readTime)); */
                 console.log(data);
             });
     }, [id]);
 
 
+    const handleInputChange = e =>
+    {
+        setEditedBlogPost({ ...editedBlogPost, [e.target.name] : e.target.value})
+        console.log(editedBlogPost);
+    }
     const onCheckBoxChange = e => 
     {
         
         const checkedVal = e.target.name;
-
+        
         function clearTags(tagsArr, value)
         {
             return tagsArr.filter(function(tag)
@@ -96,26 +115,30 @@ const EditBlogPostPage = props =>
                 return tag !== value;
             });
         }
-
+        
+        
         
         if(e.target.checked)
         {
-            tags.push(checkedVal)
-            setTags(tags);
-            console.log(tags)
+            //let newArr = [];
+            editedBlogPost.tags.push(checkedVal)
+            setEditedBlogPost({...editedBlogPost, ...editedBlogPost.tags});
+            console.log(editedBlogPost.tags)
         }
         else
         {
-            let result = clearTags(tags, e.target.name);
-            setTags(result);
-            console.log(tags);
+            //let newArr = [];
+            let result = clearTags(editedBlogPost.tags, e.target.name);
+            //newArr = result;
+            setEditedBlogPost({...editedBlogPost, ...editedBlogPost.tags = result});
+            console.log(editedBlogPost.tags);
         }
     };
 
-     const onFileChange = e => 
+    /*  const onFileChange = e => 
     {
         setFile(e.target.files[0]);
-    }
+    } */
     
   
     
@@ -125,7 +148,7 @@ const EditBlogPostPage = props =>
     {
         e.preventDefault();
 
-        if(body.length < 50)
+        if(editedBlogPost.body.length < 50)
         /*Need to remeber that when the body is stored in the DB its format 
         changes and this change alters the character count*/
         {
@@ -142,7 +165,7 @@ const EditBlogPostPage = props =>
         }
         else
         {
-            const formData = new FormData();
+            /* const formData = new FormData();
        
             formData.append("title", title);
             formData.append("author", author);
@@ -154,10 +177,10 @@ const EditBlogPostPage = props =>
             tags.forEach(item =>
             {
                 formData.append('tags', item);
-            });
+            }); */
         
 
-            console.log(...formData);
+            console.log({...editedBlogPost});
             
             setMessage(
             {
@@ -172,7 +195,7 @@ const EditBlogPostPage = props =>
                 dismissMessage();
             }, 4000)
 
-            BlogPostService.editBlogPost(id, formData).then(data =>
+            BlogPostService.editBlogPostNoPic(id, editedBlogPost).then(data =>
             {
 
                 console.log(data);
@@ -201,7 +224,7 @@ const EditBlogPostPage = props =>
 
             <Grid.Row>
             <Grid.Column>
-             <Form onSubmit={onSubmitForm}  encType="multipart/form-data">   
+             <Form onSubmit={onSubmitForm}  /* encType="multipart/form-data" */>   
              
                 <Form.Input 
                 required 
@@ -209,8 +232,8 @@ const EditBlogPostPage = props =>
                 placeholder="A few words..."
                 type="text"
                 name="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={editedBlogPost.title}
+                onChange={handleInputChange}
                 width={9}
                 />
 
@@ -220,8 +243,8 @@ const EditBlogPostPage = props =>
                 placeholder="Your Name!"
                 type="text"
                 name="author"
-                onChange={(e) => setAuthor(e.target.value)}
-                value={author}
+                onChange={handleInputChange}
+                value={editedBlogPost.author}
                 width={6}
                 />
 
@@ -231,20 +254,19 @@ const EditBlogPostPage = props =>
                 placeholder="A sentence or two..."
                 type="text"
                 name="summary"
-                onChange={(e) => setSummary(e.target.value)}
-                value={summary}
+                onChange={handleInputChange}
+                value={editedBlogPost.summary}
                 />
                 
                 <br/>
                 
                 <Editor             
-                text={body}
-                onChange={(body) => setBody(body)}               
+                text={editedBlogPost.body}
+                onChange={handleInputChange}               
                 />
 
                 {/* Needs to be moved to a see-able place */}
                 <PopupMessage
-                    id="scrollWhenShown"
                     onDismiss={()=>{dismissMessage()}}
                     hidden={message.hidden}
                     positive={message.positive}
@@ -266,22 +288,22 @@ const EditBlogPostPage = props =>
                 value={post.body}
                 /> */}
 
-                <Form.Input 
+               {/*  <Form.Input 
                 required 
                 label="Image"
                 type="file"
                 onChange={onFileChange}
                 filename="blogImage"
                 id="blogImage"
-                />
+                /> */}
 
                 <Form.Input 
                 required 
                 label="Read Time"
                 type="Number"
                 name="readTime"
-                onChange={(e) => setReadTime(e.target.value)}
-                value={readTime}
+                onChange={handleInputChange}
+                value={editedBlogPost.readTime}
                 width={2}
                 />
 
@@ -289,8 +311,8 @@ const EditBlogPostPage = props =>
                 disabled
                 label="Date"
                 name="date"
-                onChange={(e) => setDate(e.target.value)}
-                value={date}
+                onChange={handleInputChange}
+                value={editedBlogPost.date}
                 width={2}
                 />
 
@@ -298,8 +320,8 @@ const EditBlogPostPage = props =>
                 disabled
                 label="Image Path"
                 name="imageUrl"
-                onChange={(e) => setImageUrl(e.target.value)}
-                value={imageUrl}
+                onChange={handleInputChange}
+                value={editedBlogPost.imageUrl}
                 width={12}
                 />
 
@@ -310,7 +332,7 @@ const EditBlogPostPage = props =>
                         
                         return(
                             
-                        tags.includes(tagOp) ?
+                        editedBlogPost && editedBlogPost.tags.includes(tagOp) ?
                         <Form.Field  checked label={`${tagOp}`} name={`${tagOp}`}  value={`${tagOp}`} 
                         /* type='checkbox' */ /* {...tagOptions.includes(tagOp) &&  
                         {className = "checked"}} */ control='input' 

@@ -107,6 +107,6 @@ blogApp.use('/entryPoint', registerRouter);
 
 
 http.listen(blogPort, () => {
-    console.log(`Mongo's Up on: ${blogPort}`);
+    console.log(`Express is up on: ${blogPort}`);
 });
 

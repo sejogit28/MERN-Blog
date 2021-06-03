@@ -67,20 +67,43 @@ router.post('/add', upload.single('blogImage'), (req, res)=>
 });
 
 
-router.put('/update/:postId', upload.single('blogImage'), (req, res)=>
+router.put('/updatePic/:postId', upload.single('blogImage'), (req, res)=>
+{
+    blogPosts.findById(req.params.postId)
+    .then(bPost => 
+        {
+            bPost.title = bPost.title,
+                bPost.author = bPost.author,
+                bPost.summary = bPost.summary,
+                bPost.body = bPost.body,
+                bPost.readTime = bPost.readTime,
+                bPost.imageUrl = req.file.filename,
+                bPost.tags = bPost.tags
+
+                 bPost.save()
+        .then(() => res.json({message: {msgBody : "Post Updated With New Pic Bro!", msgError: false}}))
+        .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+       
+
+});
+
+router.put('/updateNoPic/:postId',  (req, res)=>
 {
     blogPosts.findById(req.params.postId)
     .then(bPost => 
         {
             bPost.title = req.body.title,
-                bPost.author = req.body.author,
-                bPost.summary = req.body.summary,
-                bPost.body = req.body.body,
-                bPost.readTime = req.body.readTime,
-                bPost.imageUrl = req.file.filename,
-                bPost.tags = req.body.tags
+            bPost.author = req.body.author,
+            bPost.summary = req.body.summary,
+            bPost.body = req.body.body,
+            bPost.readTime = req.body.readTime,
+            bPost.imageUrl = bPost.imageUrl,
+            bPost.tags = req.body.tags
 
-                 bPost.save()
+            bPost.save()
+            
         .then(() => res.json({message: {msgBody : "Post Updated Bro!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
         })

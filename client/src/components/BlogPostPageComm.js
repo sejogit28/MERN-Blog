@@ -62,7 +62,9 @@ const BlogPostSinglePageComment = props =>
        console.log(editCommValue, id, commid );
         //setEditCommTrigger(!editCommTrigger);
 
-        if(editCommValue.commBody === "")
+        const oneCharNoWhiteSpaceRegex = /([a-zA-Z])+([ -~])*/;
+
+        if(editCommValue.commBody === "" || oneCharNoWhiteSpaceRegex.test(editCommValue.commBody) === false)
         {
             setCommMessage({
                 icon: "x",
@@ -191,8 +193,9 @@ const BlogPostSinglePageComment = props =>
         
         console.log(replyCommValue);
         const {commBody, postfinder, username, parentcommfinder,posterImageUrl} = replyCommValue;
+        const oneCharNoWhiteSpaceRegex = /([a-zA-Z])+([ -~])*/;
 
-        if (commBody === "")
+        if (commBody === "" || oneCharNoWhiteSpaceRegex.test(editCommValue.commBody) === false)
         {
             setCommMessage({
                 icon: "x",
