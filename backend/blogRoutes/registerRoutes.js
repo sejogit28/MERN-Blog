@@ -66,7 +66,7 @@ router.post('/login', passport.authenticate('local', {session : false}),(req, re
         const {_id, username, role, userImageUrl, email} = req.user;
         const token = signDaToken(_id);
         res.cookie('access_token', token, {httpOnly: true, sameSite:true});
-        res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl}})
+        res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl}})
     }
 });
 
@@ -95,7 +95,7 @@ router.post('/googlelogin', /*passport.authenticate('local', {session : false}),
                        const {_id, username, role, userImageUrl, email} = user; 
                        const token = signDaToken(_id);
                         res.cookie('access_token', token, {httpOnly: true, sameSite:true});
-                        res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl},message:{msgError: false}})
+                        res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl},message:{msgError: false}})
                     }
                     else
                     {
@@ -122,7 +122,7 @@ router.post('/googlelogin', /*passport.authenticate('local', {session : false}),
                                 const {_id, username, role, userImageUrl, email} = newUser; 
                                 const token = signDaToken(_id);
                                 res.cookie('access_token', token, {httpOnly: true, sameSite:true});
-                                res.status(200).json({isAuthenticated: true, user: { username,email, role, userImageUrl}, message:{msgError: false}})
+                                res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl}, message:{msgError: false}})
                             }                       
                          });
                     }
@@ -151,8 +151,8 @@ router.get('/admin', passport.authenticate('jwt', {session: false}), (req, res) 
 if the user were to close the browser, the react State that says that they area logged in
 would be reset.This would essentially kick the user out even if they didn't log out*/
 router.get('/authenticated', passport.authenticate('jwt', {session: false}), (req, res) =>{
-   const{username, role, userImageUrl, email} = req.user;
-   res.status(200).json({isAuthenticated: true, user : {username, role, userImageUrl, email}})
+   const{_id, username, role, userImageUrl, email} = req.user;
+   res.status(200).json({isAuthenticated: true, user : {_id, username, role, userImageUrl, email}})
 });
 
 router.get('/userList',(req, res) =>

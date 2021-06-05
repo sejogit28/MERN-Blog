@@ -2,7 +2,7 @@
 
 
 export default{
-    viewSingleUser : () =>
+    viewUserList : () =>
     {
         return fetch('/entryPoint/userList')
         .then(response =>{
@@ -16,7 +16,7 @@ export default{
     },
     viewSingleUser : (userId) =>
     {
-        return fetch('/entryPoint/singleUser'/+userId)
+        return fetch('/entryPoint/singleUser/'+userId)
         .then(res => 
             {
                 if(res.status !== 401)
