@@ -66,31 +66,31 @@ const EditBlogPostPicture = props => {
          const formData = new FormData();
          formData.append("imageUrl", imageUrl);
          formData.append('blogImage', file);
-        BlogPostService.editBlogPostPic(id, formData).then(data =>
-            {
+         BlogPostService.editBlogPostPic(id, formData).then(data =>
+         {
 
+            console.log(data);
+            BlogPostService.getBlogPost(id)
+            .then(data=>
+            {
+                setBlogPost(data);
+                setImageUrl(data.imageUrl);
                 console.log(data);
-                BlogPostService.getBlogPost(id)
-                .then(data=>
-                {
-                    setBlogPost(data);
-                    setImageUrl(data.imageUrl);
-                    console.log(data);
-                });
-                //props.history.push('/admin');                 
             });
+            //props.history.push('/admin');                 
+         });
 
     }
 
 
     return (
-       <>
-                <Grid padded="vertically">
-                    <Grid.Row centered>
-                        <h1>
-                            Edit This Post Pic!!
-                        </h1>
-                    </Grid.Row>
+        <>
+            <Grid padded="vertically">
+                <Grid.Row centered>
+                    <h1>
+                        Edit This Post Pic!!
+                    </h1>
+                </Grid.Row>
 
 
                 <Grid.Row>
@@ -107,49 +107,49 @@ const EditBlogPostPicture = props => {
                
 
             <Grid.Row>
-            <Grid.Column>
-             <Form onSubmit={onSubmitForm}   encType="multipart/form-data" >         
-                       
-                {/* Needs to be moved to a see-able place */}
-                <PopupMessage
-                    onDismiss={()=>{dismissMessage()}}
-                    hidden={message.hidden}
-                    positive={message.positive}
-                    negative = {message.negative}
-                    floating
-                    icon={message.icon}
-                    header={message.header}
-                    content={message.content}
-                />
-                
-                <br/>
+                <Grid.Column>
+                    <Form onSubmit={onSubmitForm}   encType="multipart/form-data" >         
+                            
+                   
+                        <PopupMessage
+                            onDismiss={()=>{dismissMessage()}}
+                            hidden={message.hidden}
+                            positive={message.positive}
+                            negative = {message.negative}
+                            floating
+                            icon={message.icon}
+                            header={message.header}
+                            content={message.content}
+                        />
+                    
+                        <br/>
 
-                
-                <Form.Input 
-                disabled
-                label="Image Path"
-                name="imageUrl"
-                onChange={(e) => setImageUrl(e.target.value)}
-                value={imageUrl}
-                width={12}
-                />
+                    
+                        <Form.Input 
+                        disabled
+                        label="Image Path"
+                        name="imageUrl"
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        value={imageUrl}
+                        width={12}
+                        />
 
-                <Form.Input 
-                required 
-                label="Image"
-                type="file"
-                onChange={onFileChange}
-                filename="blogImage"
-                id="blogImage"
-                width={6}
-                /> 
-              
-                <Button type='submit' color="black">
-                    Edit This Posts Picture
-                </Button>
-                   </Form>
+                        <Form.Input 
+                        required 
+                        label="Image"
+                        type="file"
+                        onChange={onFileChange}
+                        filename="blogImage"
+                        id="blogImage"
+                        width={6}
+                        /> 
+                        
+                        <Button type='submit' color="black">
+                            Edit This Posts Picture
+                        </Button>
+                    </Form>
                 </Grid.Column>
-             </Grid.Row>         
+            </Grid.Row>         
         </Grid>
         </>
     )

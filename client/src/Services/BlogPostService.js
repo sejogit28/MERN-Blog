@@ -10,7 +10,7 @@ export default{
                     return response.json().then(data => data);
                 }
                 else
-                    return {message :{msgBody : "UnAuthorized"}, }
+                    return {message :{msgError: true, msgBody : "Something Went Wrong"}, }
             });
         }, 
 

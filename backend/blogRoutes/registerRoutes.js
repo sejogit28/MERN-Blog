@@ -155,6 +155,17 @@ router.get('/authenticated', passport.authenticate('jwt', {session: false}), (re
    res.status(200).json({isAuthenticated: true, user : {username, role, userImageUrl, email}})
 });
 
+router.get('/userList',(req, res) =>
+{
+    blogUser.find()
+    .then(posts => res.json(posts))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
+router.get('/singleUser/:id',(req, res) => {
+    blogUser.findById(req.params.id)
+    .then(user => res.json(user))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 module.exports = router;

@@ -42,7 +42,7 @@ router.get('/blogPagi', async (req, res) =>{
 
 router.get('/:id',(req, res) => {
     blogPosts.findById(req.params.id)
-    .then(exercise => res.json(exercise))
+    .then(singleBlogPost => res.json(singleBlogPost))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -123,15 +123,15 @@ router.put('/update/:postId/addcomm',(req, res)=>
     blogPosts.findById(req.params.postId)
     .then(bPost => 
         {
-           const userName = req.body.userName;
+           const username = req.body.username;
            const postfinder = req.params.postId;
            const commBody = req.body.commBody;
            const parentcommfinder = req.body.parentcommfinder;
-            const posterImageUrl = req.body.posterImageUrl;
+           const posterImageUrl = req.body.posterImageUrl;
 
            bPost.comments.push({
                //The variable names must match the model names(Its case senstive)
-               userName,
+               username,
                postfinder,
                commBody,
                parentcommfinder,
@@ -149,27 +149,30 @@ router.put('/update/:postId/replyToComm/:commId',(req, res)=>
 {
     blogPosts.findById(req.params.postId)
     .then(bPost => 
-        {
-           const userName = req.body.userName;
-           const postfinder = req.params.postId;
-           const commBody = req.body.commBody;
-           const parentcommfinder = req.params.commId;
-            const posterImageUrl = req.body.posterImageUrl;
+    {
+        /*The variable names(username vs userName example) are case sensitve and must match
+         what you called them in the model */
+        const username = req.body.username;
+        const postfinder = req.params.postId;
+        const commBody = req.body.commBody;
+        const parentcommfinder = req.params.commId;
+        const posterImageUrl = req.body.posterImageUrl;
 
-           bPost.comments.push({
-               //The variable names must match the model names(Its case senstive)
-               userName,
-               postfinder,
-               commBody,
-               parentcommfinder,
-               posterImageUrl
-           })
+        bPost.comments.push(
+        {
+            //The variable names must match the model names(Its case senstive)
+            username,
+            postfinder,
+            commBody,
+            parentcommfinder,
+            posterImageUrl
+        })
 
             bPost.save()
         .then(() => res.json({message: {msgBody : "Reply comment added Bro!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.put('/update/:postId/updateComm/:commId',(req, res)=>
