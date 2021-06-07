@@ -26,5 +26,42 @@ export default{
                 else
                     return {message :{msgBody: "UnAuthorized "}}
             })
-    }
+    },
+    editUserProfilePic : (id, editedUserProfilePicFormData) =>
+        {
+            return fetch('/entryPoint/updateUserPic/'+id,
+            {
+              method: "PUT",
+              body : editedUserProfilePicFormData,           
+          }).then(res => 
+            {
+                if(res.status !== 401)
+                {
+                    return res.json().then(data => data);
+                }
+                 else
+                        return {message :{msgBody: "UnAuthorized "}, msgError : true};
+                });  
+        },
+        editUserBio : (id, editedUserBio) =>
+        {
+            return fetch('/blogPost/updateUserBio/'+id,
+            {
+              method: "put",
+              body : JSON.stringify(editedUserBio),
+              headers: 
+              {
+                  'Content-Type' : 'application/json'
+              }
+             
+          }).then(res => 
+            {
+                if(res.status !== 401)
+                {
+                    return res.json().then(data => data);
+                }
+                 else
+                        return {message :{msgBody: "UnAuthorized "}, msgError : true};
+                });  
+        }
 }

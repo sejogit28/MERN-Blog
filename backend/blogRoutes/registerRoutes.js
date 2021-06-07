@@ -31,6 +31,7 @@ const signDaToken = userID =>{
         sub : userID,   
     }, "SejoMernBlog", {expiresIn: "1h"})
 }
+
 router.post('/register',upload.single('userImage'), (req, res)=>{
     const {username, password, role, email} = req.body;
     const{filename} = req.file;
@@ -166,6 +167,44 @@ router.get('/singleUser/:id',(req, res) => {
     blogUser.findById(req.params.id)
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.put('/updateUserPic/:id',  upload.single('userImage'), (req, res) =>
+{
+    blogUser.findById(req.params.id)
+    .then(user => 
+        {
+            user.userImageUrl = req.file.filename,
+            user.username = user.username,
+            user.email = user.email,
+            user.bio = user.bio
+            user.role = user.role,
+            user.password = user.password
+
+            user.save()
+            .then(() => res.json({message: {msgBody : "User Updated With New Pic Bro!", msgError: false}}))
+            .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.put('/updateUserBio/:id',   (req, res) =>
+{
+    blogUser.findById(req.params.id)
+    .then(user => 
+        {
+            user.bio = req.body.bio
+            user.userImageUrl = user.userImageUrl,
+            user.username = user.username,
+            user.email = user.email,
+            user.role = user.role,
+            user.password = user.password
+
+            user.save()
+            .then(() => res.json({message: {msgBody : "User Updated With New Bio Bro!", msgError: false}}))
+            .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 module.exports = router;

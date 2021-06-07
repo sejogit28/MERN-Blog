@@ -16,7 +16,7 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
         minlength: 7,
-        maxlength: 20
+        maxlength: 65
     },
     userImageUrl:{
         type: String,

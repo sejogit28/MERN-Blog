@@ -75,18 +75,22 @@ const authenticatedNavBar = () =>
 
             {
                 user.role === 'admin' ? 
-                 <Menu.Item
+                <Menu.Item
                 name='Create Post'
                 active={activeItem === 'Create Post'}
                 onClick={handleItemClick}
                 as={Link}
                 to="/create" 
                 icon="add"
-            /> 
-            : null
+                /> 
+                : null
             }
             
-            <Menu.Item header> Hello, {user.username}!</Menu.Item>
+            <Menu.Item 
+                as={Link} 
+                to={`/userProfile/${user._id}`} 
+                header> Hello, {user.username}!
+            </Menu.Item>
             
             <Menu.Item
                 name='logout'               

@@ -60,7 +60,8 @@ export default{
             {
               method: "put",
               /*This needed to be specified as a put method, most likely cause thats 
-              what it was called in the blogPostRoute */
+              what it was called in the blogPostRoute. It seems "GET" is the default 
+              method */
               body : JSON.stringify(editedBlogPost),
               headers: 
               {
@@ -83,8 +84,6 @@ export default{
             return fetch('/blogPost/updatePic/'+id,
             {
               method: "PUT",
-              /*This needed to be specified as a put method, most likely cause thats 
-              what it was called in the blogPostRoute */
               body : editedBlogPostPicFormData,           
           }).then(res => 
             {
@@ -102,8 +101,6 @@ export default{
             return fetch('/blogPost/delete/'+id, 
             {
                 method: "delete"
-                /*The method needed to be specified here...looks like it defaults to a GET 
-                request if you dont specify the method*/
             })
             .then(res => 
                 {
@@ -121,7 +118,7 @@ export default{
             return fetch('/blogPost/update/'+id+'/addcomm',
             /*It would appear tha that if you don't put the first "/" 
             (/blogPost/update as opposed to blogPost/update)react assumes 
-            that you want evrything to the left of theurl that is in the 
+            that you want everything to the left of the url that is in the 
             browser window "posts/blogPost" example*/
             {
               method: "put",
