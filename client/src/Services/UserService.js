@@ -45,9 +45,9 @@ export default{
         },
         editUserBio : (id, editedUserBio) =>
         {
-            return fetch('/blogPost/updateUserBio/'+id,
+            return fetch('/entryPoint/updateUserBio/'+id,
             {
-              method: "put",
+              method: "PUT",
               body : JSON.stringify(editedUserBio),
               headers: 
               {

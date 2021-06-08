@@ -169,7 +169,7 @@ router.get('/singleUser/:id',(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.put('/updateUserPic/:id',  upload.single('userImage'), (req, res) =>
+router.put('/updateUserPic/:id',  upload.single('newUserImage'), (req, res) =>
 {
     blogUser.findById(req.params.id)
     .then(user => 

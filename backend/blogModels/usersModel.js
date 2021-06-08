@@ -28,7 +28,8 @@ const userSchema = new Schema({
     },
     role: {type: String, required: true, trim:true},
     email:{type:String, required: true, unique:true, trim:true, minlength: 5},
-    bio: String},
+    bio: {type:String, minlength: 3}
+    },
     {
         timestamps: true,
     })

@@ -47,8 +47,7 @@ const BlogPostSinglePageComment = props =>
     }, [props.socket, props.blogPost])
     const editCommTriggerFunc = () => 
     {
-            setEditCommTrigger(!editCommTrigger);
-            
+        setEditCommTrigger(!editCommTrigger);           
     }
  
     const onEditCommInputChange = e => 
