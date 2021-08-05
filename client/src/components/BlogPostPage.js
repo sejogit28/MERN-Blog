@@ -228,7 +228,7 @@ const BlogPostSinglePage = props =>
                     posterImageUrl: user.userImageUrl
                 });
            e.target.reset(); 
-           /*This WAS needed to reset the form since you're WERENT using useState for the 
+           /*This USED TO BE needed to reset the form since you're WERENT using useState for the 
            onChange BEFORE. Now it's just a less verbose way of resetting the comm form*/
         }
         

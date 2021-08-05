@@ -301,7 +301,7 @@ const BlogPostSinglePageComment = props =>
                                         </>
                                     : null  
                                 }
-                                <Button onClick={commActionTriggerFunc } content="Cancel" icon='cancel'/>
+                                <Button onClick={commActionTriggerFunc} content="Cancel" icon='cancel'/>
 
                             </Comment.Actions>
                             }

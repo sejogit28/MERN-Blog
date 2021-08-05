@@ -12,7 +12,7 @@ const UserProfilePage = props => {
     const [userInfo, setUserInfo] = useState();
     const [file, setFile] = useState();
     const [imageUrl, setImageUrl] = useState("");
-    const [bio, setBio] = useState({bio: ""});
+    //const [bio, setBio] = useState({bio: ""});
     const [profilePicForm, setProfilePicForm] = useState(false);
     const [newBioForm, setNewBioForm] = useState(false);
     const [message, setMessage] = useState(

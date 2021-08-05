@@ -25,8 +25,7 @@ const onSubmitForm = e =>
         {
             authContext.setUser(user);
             authContext.setIsAuthenticated(isAuthenticated);
-            props.history.push('/');
-            
+            props.history.push('/');         
         }
         else
         {
