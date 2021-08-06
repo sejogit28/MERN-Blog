@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, Card, Pagination,Divider } from 'semantic-ui-react';
+import 
+{ Grid, Card, Pagination,Divider, Image, Segment, Dimmer, Loader,
+    Placeholder } from 'semantic-ui-react';
 
 import BlogPostService from '../Services/BlogPostService';
 import BlogCard from './BlogMainPageCard';
@@ -7,7 +9,7 @@ import BlogCard from './BlogMainPageCard';
 
 const BlogMainPage = () =>
 {
-    
+    const [loaded, setLoaded] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0)
     const [blogPosts, setBlogPosts] = useState([]);
@@ -16,6 +18,7 @@ const BlogMainPage = () =>
             console.log(bPosts);
             setBlogPosts(bPosts);
             setNumberOfPages(totalBlogPages);
+            setLoaded(true);
 
         });
     }, [pageNumber]);
@@ -25,7 +28,28 @@ const BlogMainPage = () =>
         setPageNumber(pageInfo.activePage);
     }
 
+    const PlaceHolderComponent =()=>
+    {
+        return(
+            <Grid.Column>
+            <Segment raised>
+                <Placeholder>
+                <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                </Placeholder.Header>
+                <Placeholder.Paragraph>
+                    <Placeholder.Line length='medium' />
+                    <Placeholder.Line length='short' />
+                </Placeholder.Paragraph>
+                </Placeholder>
+            </Segment>
+            </Grid.Column>
+        );
+    }
+
     return(
+        loaded ?
      <Grid container columns='equal' >
             <Grid.Row centered >
                 <h1>Welcome to Neuroscience Blog!!!</h1>
@@ -55,9 +79,22 @@ const BlogMainPage = () =>
             </Card.Group>   
             </Grid.Row>
             <Grid.Row>
-                <Pagination onPageChange={onPagiChange} activePage={pageNumber} totalPages={numberOfPages}/>
+                <Pagination 
+                    onPageChange={onPagiChange} 
+                    activePage={pageNumber} 
+                    totalPages={numberOfPages}
+                />
             </Grid.Row>
-        </ Grid>
+        </ Grid> 
+        :
+        <Grid columns={2} stackable>
+            <PlaceHolderComponent />
+            <PlaceHolderComponent />
+            <PlaceHolderComponent />
+            <PlaceHolderComponent />
+            <PlaceHolderComponent />
+            <PlaceHolderComponent />
+        </Grid>
      )
         }   
 

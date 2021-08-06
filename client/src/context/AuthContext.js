@@ -12,7 +12,7 @@ export default ({children})=>
 {
     const [user, setUser] = useState(null);  
     const [isAuthenticated, setIsAuthenticated] = useState(false);  
-    const [isLoaded, setIsLoaded] = useState(false);  
+    const [loaded, setLoaded] = useState(false);  
 
     //useEffect is the react hook version of a "ComponentDidMount" life cycle
     useEffect(()=>
@@ -21,7 +21,7 @@ export default ({children})=>
             {
                 setUser(data.user);
                 setIsAuthenticated(data.isAuthenticated);
-                setIsLoaded(true);
+                setLoaded(true);
             });
     }, []);
 /*Putting the empty brackets here means we only want this to happen once, 
@@ -30,7 +30,7 @@ you specify how often you want it to happen*/
 
     return(
         <div>
-            {!isLoaded ?  
+            {!loaded ?  
                 <Segment>
                     <Dimmer active>
                         <Loader inverted size='massive'>Loading</Loader>

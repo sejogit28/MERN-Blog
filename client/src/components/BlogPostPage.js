@@ -1,5 +1,10 @@
 import React, {useEffect, useState, useContext, useRef}from 'react';
-import { Grid, Segment, Header, Comment, Icon, Form, Button, Divider, Message} from 'semantic-ui-react';
+import 
+{
+     Grid, Segment, Header, Comment, Icon, Form, Button, Divider, Message, Placeholder,
+     Image
+} 
+from 'semantic-ui-react';
 import {Link} from 'react-router-dom'
 import io from 'socket.io-client';
 //import { convertFromRaw} from 'draft-js';
@@ -18,6 +23,7 @@ const BlogPostSinglePage = props =>
 
 
     const{isAuthenticated, user} = useContext(AuthContext);
+    const[loaded, setLoaded] = useState(false);
     const[socket, setSocket] = useState(null);
     let timerID = useRef(null);
     const [blogPost, setBlogPost] = useState(
@@ -75,7 +81,7 @@ const BlogPostSinglePage = props =>
         .then(postdata => {
                     setBlogPost(postdata);                  
                     console.log(postdata);
-                   
+                   setLoaded(true);
             })   
         
         const socket = io() 
@@ -136,6 +142,29 @@ const BlogPostSinglePage = props =>
             </h2>
         </Segment>
        )
+    }
+
+    const PlaceholderComponent =() =>
+    {
+        return(
+        <Placeholder fluid>
+            <Placeholder.Paragraph>
+                <Placeholder.Line  />
+                <Placeholder.Line />
+                <Placeholder.Line />
+                <Placeholder.Line />
+                <Placeholder.Line />
+            </Placeholder.Paragraph>
+            <Placeholder.Header image>
+                <Placeholder.Line />
+                <Placeholder.Line />
+            </Placeholder.Header>
+            <Placeholder.Header image>
+                <Placeholder.Line />
+                <Placeholder.Line />
+            </Placeholder.Header>
+        </Placeholder>
+        );
     }
     
     //const commBodyRef = useRef("");
@@ -248,9 +277,21 @@ const cssTrick = idValue =>
 
 
     return(
+        loaded?
     <>
         {
             blogPost &&
+            <>
+            <Grid centered padded>
+                <Image 
+                    src={`/BlogPostImages/${blogPost.imageUrl}`} 
+                    fluid 
+                    size='massive'
+                    style={{minWidth: '100px', minHeight:'100px'}}
+                    
+                    />
+            </Grid>
+            
                 <Grid centered >
                     <Grid.Column width={8} >
                         <h1>{blogPost.title}</h1>
@@ -258,7 +299,8 @@ const cssTrick = idValue =>
                          <h5>Written by: {blogPost.author} on {blogPost.createdAt && blogPost.createdAt.substring(0,10)}</h5>
                          {blogPost.body && <div dangerouslySetInnerHTML={{__html : blogPost.body}}></div>}
                     </Grid.Column>
-                </Grid>                                  
+                </Grid>  
+                </>                                
         }
 
     <Comment.Group>
@@ -344,6 +386,12 @@ const cssTrick = idValue =>
             }
         
     </Comment.Group>
+   </>
+   :
+   <>
+   <PlaceholderComponent/>
+   <PlaceholderComponent/>
+   <PlaceholderComponent/>
    </>
 );
 }

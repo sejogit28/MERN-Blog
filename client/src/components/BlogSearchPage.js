@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, Card, Input, Button } from 'semantic-ui-react';
+import { Grid, Card, Input, Button, Placeholder } from 'semantic-ui-react';
 
 
 import BlogPostService from '../Services/BlogPostService';
@@ -10,6 +10,7 @@ const BlogSearchPage = () =>
 {
     
 
+    const [loaded, setLoaded] = useState(false);
     const [blogPosts, setBlogPosts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 //    const [searchType, setSearchType] = useState('');
@@ -19,7 +20,7 @@ const BlogSearchPage = () =>
         BlogPostService.getBlogPosts().then(data =>{
             console.log(data);
             setBlogPosts(data);
-          
+            setLoaded(true)
 
         });
     }, []);
@@ -55,10 +56,39 @@ const BlogSearchPage = () =>
             }))
     }
 
-    
+    const PlaceHolderCard = () =>
+    {
+        return(
+        <Card>
+              <Placeholder>
+                  <Placeholder.Image square />
+                </Placeholder>
+                 <Card.Content>
+                    <Placeholder>
+                        <Placeholder.Header>
+                            <Placeholder.Line length='very short' />
+                            <Placeholder.Line length='medium' />
+                        </Placeholder.Header>
+                        <Placeholder.Paragraph>
+                            <Placeholder.Line length='short' />
+                        </Placeholder.Paragraph>
+                    </Placeholder>
+                 </Card.Content>
+                 <Card.Content extra>
+                    <Button 
+                        disabled 
+                        color='black'>
+                        Read More
+                    </Button>
+                </Card.Content>
+                
+          </Card>
+        );
+    }
     
 
     return(
+        loaded?
      <Grid container columns='equal'>
             <Grid.Row centered>
                 <h1>Search</h1>
@@ -103,6 +133,18 @@ const BlogSearchPage = () =>
             </Card.Group>   
             </Grid.Row>
         </ Grid>
+        :
+        <Card.Group
+            doubling
+            itemsPerRow={3} 
+            stackable
+        >
+          
+            <PlaceHolderCard/>
+            <PlaceHolderCard/>
+            <PlaceHolderCard/>
+
+        </Card.Group>
      )
         }   
 

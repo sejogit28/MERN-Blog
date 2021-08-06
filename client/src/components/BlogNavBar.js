@@ -14,7 +14,7 @@ const [activeItem, setActiveItem] = useState(path);
 
 const handleItemClick = (e, { name }) => setActiveItem(name);
 /*Semantic-ui-React integrates with the 'link' from React-router-dom so 
-instead to change the <a> tag to a <Link> you just write "as=Link"*/
+instead of changing the <a> tag to a <Link> you just write "as=Link"*/
 
 const{isAuthenticated, user, setIsAuthenticated, setUser} = useContext(AuthContext);
 
