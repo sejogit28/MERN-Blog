@@ -73,6 +73,10 @@ const BlogSearchPage = () =>
                     <Button onClick={()=>filterByTag("Exercise")}>Exercise</Button>
                     <Button onClick={()=>filterByTag("Memory")}>Memory</Button>
                     <Button onClick={()=>filterByTag("Neuroplasticity")}>Neuroplasticity</Button>
+                </Button.Group> 
+            </Grid.Row>
+            <Grid.Row centered>
+                <Button.Group>
                     <Button onClick={()=>filterByTag("Sleep")}>Sleep</Button>
                     <Button onClick={()=>filterByTag("Learning")}>Learning</Button>
                     <Button onClick={()=>filterByTag("Emotion")}>Emotion</Button>

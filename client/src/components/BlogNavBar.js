@@ -103,7 +103,13 @@ const authenticatedNavBar = () =>
 
 return (
       
-        <Menu pointing secondary size="massive" color="black"> 
+        <Menu 
+            stackable       
+            inverted 
+            size="massive" 
+            color="black" 
+            attached='top'> 
+        <Menu.Item header>Neuroscience Blog</Menu.Item>
           <Menu.Item
             name='Home'
             active={activeItem === 'Home'}
@@ -111,6 +117,7 @@ return (
             as={Link}
             to="/"
             icon='home'
+            
           /> 
           <Menu.Item
             name='search'

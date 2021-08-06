@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Container} from 'semantic-ui-react'; 
 
 import BlogNavBar from './components/BlogNavBar';
+import BlogFooter from './components/BlogFooter';
 import Login from './components/Login';
 import Register from './components/Register';
 import BlogMainPage from './components/BlogMainPage';
@@ -26,7 +27,7 @@ function App() {
     
     <Router>
          <BlogNavBar />
-         <Container>
+         <Container style={{marginTop :'30px',marginBottom: '50px'}}>
           <Route exact path="/" component={BlogMainPage} />
           <Route exact path="/Search" component={BlogSearchPage} />
           <Route exact path="/posts/:id" component={BlogPostSinglePage} />
@@ -44,7 +45,7 @@ function App() {
           {/* <Route exact path="/register" component={Register} /> */}
        
          </Container>
-         
+         <BlogFooter />
     </Router> 
     
   );
