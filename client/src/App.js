@@ -27,7 +27,7 @@ function App() {
     
     <Router>
          <BlogNavBar />
-         <Container style={{marginTop :'30px',marginBottom: '50px'}}>
+         <Container style={{marginTop :'30px',marginBottom: '170px'}}>
           <Route exact path="/" component={BlogMainPage} />
           <Route exact path="/Search" component={BlogSearchPage} />
           <Route exact path="/posts/:id" component={BlogPostSinglePage} />

@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import AuthServices from '../Services/AuthServices';
 import Message from '../components/Message';
 import {Grid, Form, Button, Divider} from 'semantic-ui-react';
+import GoogleLogin from 'react-google-login';
 import {AuthContext} from '../context/AuthContext';
 
 
@@ -10,6 +11,32 @@ const Login = props =>
     const[user, setUser] = useState({username: "", password: ""});
     const[message, setMessage] = useState(null);
     const authContext = useContext(AuthContext);
+
+    const successfulGoogle = (response) => 
+    {
+        console.log(response);
+        AuthServices.googleLogin(response).then(data=> {
+        
+        const{isAuthenticated, user, message} = data;
+        setMessage(message);
+        if(!message.msgError)
+        {
+            
+            authContext.setUser(user);
+            authContext.setIsAuthenticated(isAuthenticated);
+            props.history.push('/');
+            
+         
+        }
+
+    })
+    
+    }
+
+    const unSuccessfulGoogle = (response) =>
+    {
+        console.log(response);
+    }
 
 const onInputChange = e => 
 {
@@ -45,6 +72,25 @@ const onSubmitForm = e =>
             </Grid.Row>  
 
             <Divider />
+
+            <Grid.Row>
+                
+            <GoogleLogin
+            clientId="909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.apps.googleusercontent.com"
+            buttonText="Sign Up/In with your Google profile!"
+            onSuccess={successfulGoogle}
+            onFailure={unSuccessfulGoogle}
+            cookiePolicy={'single_host_origin'}
+            />
+
+            </Grid.Row>
+
+            <br/>
+
+            <Grid.Row>
+                <h2>- OR -</h2>
+            </Grid.Row>
+            <br/> 
 
             <Grid.Row>  
                 <Form.Input 
