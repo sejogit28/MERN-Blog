@@ -8,7 +8,7 @@ import UserService from '../Services/UserService';
 
 const UserProfilePage = props => {
 
-    const {isAuthenticated, user} = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
     const [userInfo, setUserInfo] = useState();
     const [file, setFile] = useState();
     const [imageUrl, setImageUrl] = useState("");

@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useRef}from 'react';
 import 
 {
-     Grid, Segment, Header, Comment, Icon, Form, Button, Divider, Message, Placeholder,
+     Grid, Segment, Header, Comment, Icon, Form, Button, Divider, Placeholder,
      Image
 } 
 from 'semantic-ui-react';
@@ -295,7 +295,7 @@ const cssTrick = idValue =>
                 <Grid centered >
                     <Grid.Column width={8} >
                         <h1>{blogPost.title}</h1>
-                        <h4>{blogPost.summary}</h4> <br/>
+                        <h4>{blogPost.summary}</h4>
                          <h5>Written by: {blogPost.author} on {blogPost.createdAt && blogPost.createdAt.substring(0,10)}</h5>
                          {blogPost.body && <div dangerouslySetInnerHTML={{__html : blogPost.body}}></div>}
                     </Grid.Column>

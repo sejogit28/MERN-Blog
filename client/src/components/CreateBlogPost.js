@@ -52,7 +52,7 @@ const CreateBlogPostPage = props =>
             content: ""
         })
     }
-    const authContext = useContext(AuthContext);
+    //const authContext = useContext(AuthContext);
 
     const onCheckBoxChange = e => 
     {
@@ -131,7 +131,7 @@ const CreateBlogPostPage = props =>
                 icon: "check circle outline",
                 hidden: false,
                 positive: true,
-                header: "Article Edited!!!",          
+                header: "Article Posted!!!",          
             })
 
             timerID = setTimeout(()=>

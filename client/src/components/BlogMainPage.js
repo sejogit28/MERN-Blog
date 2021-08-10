@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import 
-{ Grid, Card, Pagination,Divider, Image, Segment, Dimmer, Loader,
-    Placeholder } from 'semantic-ui-react';
+{ 
+    Grid, Card, Pagination,Divider, Segment, Placeholder 
+} 
+from 'semantic-ui-react';
 
 import BlogPostService from '../Services/BlogPostService';
 import BlogCard from './BlogMainPageCard';
@@ -52,7 +54,7 @@ const BlogMainPage = () =>
         loaded ?
      <Grid container columns='equal' >
             <Grid.Row centered >
-                <h1>Welcome to Neuroscience Blog!!!</h1>
+                <h1>Welcome to Coding Mind!!!</h1>
             </Grid.Row>
             <Grid.Row>
                 <Pagination onPageChange={onPagiChange} activePage={pageNumber} totalPages={numberOfPages}/>

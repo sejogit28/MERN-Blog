@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
+
 
 import {Menu, Icon} from 'semantic-ui-react'
 
@@ -16,13 +16,13 @@ const BlogFooter = () => {
             borderless
             widths={4}
             > 
-        <Menu.Item header icon='world'>Neuroscience Blog</Menu.Item>
+        <Menu.Item header icon='world'>Coding Mind</Menu.Item>
         <Menu.Item
         header
           name='My Portfolio'
           /* active={activeItem === 'video camera'}
           onClick={this.handleItemClick} */
-          href='#'
+          href='https://sejose.tech'
         >
           <Icon name='world' />
           My Portfolio

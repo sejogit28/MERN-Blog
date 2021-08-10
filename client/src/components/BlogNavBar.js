@@ -109,7 +109,7 @@ return (
             size="massive" 
             color="black" 
             attached='top'> 
-        <Menu.Item header>Neuroscience Blog</Menu.Item>
+        <Menu.Item header>Coding Mind</Menu.Item>
           <Menu.Item
             name='Home'
             active={activeItem === 'Home'}

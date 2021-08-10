@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Grid, Form, Button, Divider} from 'semantic-ui-react';
 import Editor from 'react-medium-editor';
 import 'medium-editor/dist/css/medium-editor.css'
@@ -6,14 +6,13 @@ import 'medium-editor/dist/css/themes/default.css'
 
 import BlogPostService from '../Services/BlogPostService';
 import PopupMessage from './PopupMessage';
-import { AuthContext } from '../context/AuthContext';
 
 
 
 const EditBlogPostPage = props => 
 {   
 
-    const authContext = useContext(AuthContext);
+    //const authContext = useContext(AuthContext);
 
 
     const[editedBlogPost, setEditedBlogPost] = useState(
@@ -260,9 +259,9 @@ const EditBlogPostPage = props =>
                 
                 <br/>
                 
-                <Editor             
+                <Editor           
                 text={editedBlogPost.body}
-                onChange={handleInputChange}               
+                onChange={(body)=>{setEditedBlogPost({ ...editedBlogPost, body: body})}}               
                 />
 
                 {/* Needs to be moved to a see-able place */}

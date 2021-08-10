@@ -1,5 +1,5 @@
-import React ,{useState, useContext, useEffect, useRef} from 'react';
-import {Grid, Form, Button, Divider, Image, Card} from 'semantic-ui-react';
+import React ,{useState, useEffect, useRef} from 'react';
+import {Grid, Form, Button, Card} from 'semantic-ui-react';
 import BlogCard from './BlogMainPageCard';
 
 import PopupMessage from './PopupMessage';

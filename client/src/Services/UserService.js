@@ -1,7 +1,7 @@
-/*The point of this file is to avoid storing all this info in the component */
+/*The point of this file is to avoid storing all this info in the components */
 
 
-export default{
+ const UserService  = {
     viewUserList : () =>
     {
         return fetch('/entryPoint/userList')
@@ -65,3 +65,5 @@ export default{
                 });  
         }
 }
+
+export default UserService;

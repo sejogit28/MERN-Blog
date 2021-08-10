@@ -15,17 +15,25 @@ const BlogAdminCard = props =>
             var currPostTitle = prompt('Please type the title of the post that you want to delete');
             if(currPostTitle === props.blogpost.title)
             {
-                BlogPostService.deleteBlogPost(props.blogpost._id).then(data => data);
+                props.BlogPostService.deleteBlogPost(props.blogpost._id)
+                .then(data => 
+                {
+                    props.BlogPostService.getBlogPosts().then(data =>
+                    {
+                        props.setBlogPostsList(data);
+                    });
+                });
                 alert('Post successfully deleted');
-                window.location.replace("/admin");
+
+                /* window.location.replace("/admin");
                 // https://stackoverflow.com/questions/503093/how-do-i-redirect-to-another-webpage
-               
+                */
             }
 
         }
         else
         {
-            alert('.....nice');
+            alert('Post deletion cancelled');
         }        
     }
     
@@ -53,21 +61,32 @@ const BlogAdminCard = props =>
                 </Card.Content>
                 <Card.Content>
                     <Button.Group>
-                         <Button color="green">
-                        <Link to={"posts/"+props.blogpost._id}>View</Link>
-                        </Button>
+                         
+                        <Link to={"posts/"+props.blogpost._id}>
+                            <Button color="green">
+                                View
+                            </Button>
+                        </Link>
+                        
 
                         <Button.Or />
 
-                        <Button color="yellow">
-                        <Link to={"edit/"+props.blogpost._id}>Edit</Link>
-                        </Button>
-
+                        
+                        <Link to={"edit/"+props.blogpost._id}>
+                            <Button color="yellow">
+                                Edit
+                            </Button>
+                        </Link>
+                        
                         <Button.Or />
 
-                        <Button color="yellow">
-                        <Link to={"editPic/"+props.blogpost._id}>Change Pic</Link>
-                        </Button>
+                        
+                        <Link to={"editPic/"+props.blogpost._id}>
+                            <Button color="yellow">
+                                Change Pic
+                            </Button>
+                        </Link>
+                        
 
                         <Button.Or />
 

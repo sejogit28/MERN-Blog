@@ -1,7 +1,7 @@
 /*The point of this file is to avoid storing all this info in the component */
 //let BlogUsers = require('../../../backend/blogModels/users.model');
 
-export default{
+const AuthService = {
     login : user =>
     {
 
@@ -88,3 +88,5 @@ export default{
             });
     }
 }
+
+export default AuthService;

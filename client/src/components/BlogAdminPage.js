@@ -8,11 +8,11 @@ import BlogAdminCard from './BlogAdminPageCard';
 
 const BlogAdminPage = () =>
 {
-    const [blogPosts, setBlogPosts] = useState([]);
+    const [blogPostsList, setBlogPostsList] = useState([]);
 
     useEffect(() =>{
         BlogPostService.getBlogPosts().then(data =>{
-            setBlogPosts(data);
+            setBlogPostsList(data);
         });
     }, []);
 
@@ -23,21 +23,30 @@ const BlogAdminPage = () =>
                 <h1>Admin Page</h1>
             </Grid.Row>
             <Grid.Row>
-                <Button fluid color="black"
-                ><Link to="/create">Create A New Post</Link>
-                    
+                <Link  to="/create">
+                    <Button fluid color="black">
+                        Create A New Post
                 </Button>
+            </Link>
+                
             </Grid.Row>
             <Grid.Row>
             <Card.Group> 
             {
-            blogPosts.reverse().map(blogpost => 
+            blogPostsList.reverse().map(blogpost => 
             //.reverse() makes it so the most recently created post is displayed first
                 {
                     return(
                         <>
                             
-                            <BlogAdminCard  key={blogpost._id} blogpost={blogpost}/>
+                            <BlogAdminCard
+                              key={blogpost._id}
+                               blogpost={blogpost}
+                               BlogPostService={BlogPostService}
+                               blogPostsList={blogPostsList}
+                               setBlogPostsList={setBlogPostsList}
+
+                               />
                         
 
                         </>

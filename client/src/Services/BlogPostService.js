@@ -1,6 +1,6 @@
 
 
-export default{
+const BlogPostService = {
         getBlogPosts : () =>
         {
             return fetch('/blogPost/blogList')
@@ -174,4 +174,6 @@ export default{
                         return {message :{msgBody: "UnAuthorized "}, msgError : true};
                 });  
         },
-        }
+}
+
+export default BlogPostService;
