@@ -6,13 +6,17 @@ const AuthService = {
     {
 
         console.log(user);
-        return fetch('/entryPoint/login', 
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/login', 
         {
             method: "post",
+            credentials: "include",
             body: JSON.stringify(user),
             headers: 
             {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "https://fervent-darwin-5bcd5e.netlify.app"
+                
             }
         }).then(res => { 
             if(res.status !== 401)
@@ -25,13 +29,16 @@ const AuthService = {
     googleLogin: info =>
     {
         console.log(info);
-        return fetch('/entryPoint/googlelogin', 
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/googlelogin', 
         {
-            method: "POST",
+            method: "POST", 
+            credentials: "include",       
             body: JSON.stringify(info),
             headers: 
             {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "https://fervent-darwin-5bcd5e.netlify.app"
             }
         }).then(res => 
             {
@@ -44,10 +51,16 @@ const AuthService = {
 
     register: formData =>
     {
-        return fetch('/entryPoint/register', 
+        console.log(formData);
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/register', 
         {
             method: "POST",
+            
             body: formData,
+            headers: 
+            {             
+                "Access-Control-Allow-Origin": "https://fervent-darwin-5bcd5e.netlify.app"
+            }
         }).then(res => 
             {
                 if(res.status !== 401)
@@ -61,19 +74,30 @@ const AuthService = {
 
     logout: () =>
     {
-        return fetch('/entryPoint/logout')
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/logout',
+        {
+            credentials: "include",
+            headers: 
+            {
+                
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "https://fervent-darwin-5bcd5e.netlify.app"
+            }
+        })
         .then(res=> res.json())
         .then(data => data);
     },
 
     isAuthenticated : () =>
     {
-        return fetch('/entryPoint/authenticated',
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/authenticated',
         {
             method: "GET",
+            credentials: "include",
             headers: 
             {
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "https://fervent-darwin-5bcd5e.netlify.app",
+                "Access-Control-Allow-Credentials": true,
                 'Content-Type' : 'application/json'
             }
         })

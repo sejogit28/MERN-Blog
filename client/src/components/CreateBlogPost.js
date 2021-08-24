@@ -12,6 +12,7 @@ import 'medium-editor/dist/css/themes/default.css'
 import BlogPostService from '../Services/BlogPostService';
 import PopupMessage from './PopupMessage';
 import { AuthContext } from '../context/AuthContext';
+import tagOptions from './TagOptions';
 
 
 
@@ -116,12 +117,11 @@ const CreateBlogPostPage = props =>
             formData.append("summary", summary);
             formData.append("body", /* JSON.stringify(edited) */ body);
             formData.append("readTime", readTime);
-            formData.append('blogImage', file);
             tags.forEach(item =>
-                {
+            {
                 formData.append('tags', item);
-                });
-        
+            });
+            formData.append('blogImage', file);
 
         
             console.log(file);
@@ -236,14 +236,22 @@ const CreateBlogPostPage = props =>
 
                 <Form.Group grouped>
                     <label>Tags(Required)</label>
-                    <Form.Field label='Exercise' name='Exercise' value='Exercise' control='input' type='checkbox' onChange={onCheckBoxChange}/>
+                    {tagOptions.map(option =>
+                    {
+                        return(
+                            <Form.Field label={option} name={option} value={option} control='input' type='checkbox' onChange={onCheckBoxChange}/>
+
+                        );
+                    })}
+{/*                     <Form.Field label='Exercise' name='Exercise' value='Exercise' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Memory' name='Memory' value='Memory' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Neuroplasticity' name='Neuroplasticity' value='Neuroplasticity' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Sleep' name='Sleep' value='Sleep' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Learning' name='Learning' value='Learning' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Emotion' name='Emotion' value='Emotion' control='input' type='checkbox' onChange={onCheckBoxChange}/>
                     <Form.Field label='Nutrition' name='Nutrition' value='Nutrition' control='input' type='checkbox' onChange={onCheckBoxChange}/>
-                </Form.Group>
+                    <Form.Field label='Coding' name='Coding' value='Coding' control='input' type='checkbox' onChange={onCheckBoxChange}/>
+ */}                </Form.Group>
 
                 <PopupMessage
                     onDismiss={()=>{dismissMessage()}}

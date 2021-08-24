@@ -78,13 +78,17 @@ const BlogPostSinglePage = props =>
         better way to work)*/
             
         BlogPostService.getBlogPost(props.match.params.id)
-        .then(postdata => {
+        .then(postdata => 
+            {
                     setBlogPost(postdata);                  
                     console.log(postdata);
                    setLoaded(true);
             })   
         
-        const socket = io() 
+        const socket = io("https://sejomernblogapi.herokuapp.com/",
+        {
+            withCredentials: true
+        }) 
         /* in this video: https://youtu.be/tBKUxOdK5Q8?t=2633 a global state was used to 
         set up the socket. However, this seems to have worked without using a global state*/
         setSocket(socket)
@@ -284,7 +288,7 @@ const cssTrick = idValue =>
             <>
             <Grid centered padded>
                 <Image 
-                    src={`/BlogPostImages/${blogPost.imageUrl}`} 
+                    src={blogPost.imageUrl} 
                     fluid 
                     size='massive'
                     style={{minWidth: '100px', minHeight:'100px'}}

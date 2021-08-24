@@ -4,7 +4,7 @@
  const UserService  = {
     viewUserList : () =>
     {
-        return fetch('/entryPoint/userList')
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/userList')
         .then(response =>{
                 if (response.status !== 401)
             {
@@ -16,7 +16,7 @@
     },
     viewSingleUser : (userId) =>
     {
-        return fetch('/entryPoint/singleUser/'+userId)
+        return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/singleUser/'+userId)
         .then(res => 
             {
                 if(res.status !== 401)
@@ -29,7 +29,7 @@
     },
     editUserProfilePic : (id, editedUserProfilePicFormData) =>
         {
-            return fetch('/entryPoint/updateUserPic/'+id,
+            return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/updateUserPic/'+id,
             {
               method: "PUT",
               body : editedUserProfilePicFormData,           
@@ -45,7 +45,7 @@
         },
         editUserBio : (id, editedUserBio) =>
         {
-            return fetch('/entryPoint/updateUserBio/'+id,
+            return fetch('https://sejomernblogapi.herokuapp.com/entryPoint/updateUserBio/'+id,
             {
               method: "PUT",
               body : JSON.stringify(editedUserBio),

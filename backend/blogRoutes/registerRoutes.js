@@ -1,28 +1,26 @@
 const express = require('express');
 const router = express.Router();
+
 const passport = require('passport');
 const passportConfig = require('../passport');
 const {OAuth2Client} = require('google-auth-library');
 const JWT = require('jsonwebtoken');
-const multer = require('multer');
+
+
+const upload = require('../utils/multer');
+const cloudinary = require("../utils/cloudinary");
 const blogUser = require('../blogModels/usersModel');
 
 
-const storage = multer.diskStorage({
-    destination: function (request, file, callback){
-        callback(null, 'C:/Users/Sean/Desktop/React/mern-blog/client/public/UserImages');
-    },
-    filename: function(request, file, callback){
-        callback(null, Date.now() + file.originalname);
-    },
-})
 
-const upload = multer({
+
+
+/* const upload = multer({
     storage: storage,
     limits: {
         fileSize: 1024*1024*3
     },
-})
+}) */
 
 
 const signDaToken = userID =>{
@@ -32,41 +30,54 @@ const signDaToken = userID =>{
     }, "SejoMernBlog", {expiresIn: "1h"})
 }
 
-router.post('/register',upload.single('userImage'), (req, res)=>{
-    const {username, password, role, email} = req.body;
-    const{filename} = req.file;
-
-    console.log(username, password, role, email, filename);
-    User.findOne({username}, (err, user)=>{
-        if(err)
-            res.status(500).json({message: {msgBody : "Error has occured at server when finding this user", msgError: true}});
-        if(user)
-            res.status(400).json({message: {msgBody : "Username is already taken", msgError: true}});
-        else{
-            const newUser = new blogUser(
-                {
-                    username: username, 
-                    password: password,
-                    role: role, 
-                    email: email, 
-                    userImageUrl: filename
-                });
-            newUser.save(err=>{
-                if(err)
-                    res.status(500).json({message: {msgBody : "Error has occured at server after save", msgError: true}});
-                else
-                    res.status(201).json({message: {msgBody : "New user registered bro!!", msgError: false}});
+router.post('/register', upload.single('userImage'), async (req, res)=>{
+    const {username, password, role, email ,bio} = req.body;
+    try 
+    {
+        const uploadResult = await cloudinary.uploader.upload(req.file.path);
+        
+        //res.json(uploadResult); 
     
-            })
-        }
-    })
+
+        console.log(username, password, role, email, bio);
+        blogUser.findOne({username}, (err, user)=>
+        {
+            if(err)
+                res.status(500).json({message: {msgBody : "Error has occured at server when finding this user.  Operation cancelled", msgError: true}});
+            if(user)
+                res.status(400).json({message: {msgBody : "Username is already taken", msgError: true}});
+            else{
+                const newUser = new blogUser(
+                    {
+                        username: username, 
+                        password: password,
+                        role: role, 
+                        email: email, 
+                        bio: bio,
+                        userImageUrl: uploadResult.secure_url,
+                        cloudinaryId: uploadResult.public_id
+                    });
+                newUser.save(err=>
+                {
+                    if(err)
+                        res.status(500).json({message: {msgBody : "Error has occured at server while attempting to save. Operation cancelled", msgError: true}});
+                    else
+                        res.status(201).json({message: {msgBody : "New user registered bro!!", msgError: false}});
+        
+                })
+            }
+        })
+    } catch (err) 
+    {
+        console.log(err);
+    }
 });
 
 router.post('/login', passport.authenticate('local', {session : false}),(req, res)=>{
     if(req.isAuthenticated()){
         const {_id, username, role, userImageUrl, email} = req.user;
         const token = signDaToken(_id);
-        res.cookie('access_token', token, {httpOnly: true, sameSite:true});
+        res.cookie('access_token', token, {httpOnly: true, sameSite:"none", secure:true});
         res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl}})
     }
 });
@@ -76,14 +87,13 @@ const client = new OAuth2Client("909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.a
 /*The commented out part(passport.authenticate...) was causing a 400 error. It doesn't appear
  to be neccesary for the google OAUTH to work*/
  
-router.post('/googlelogin', /*passport.authenticate('local', {session : false}),*/ (req, res) => {
+router.post('/googlelogin'/* , passport.authenticate('local', {session : false}) */, (req, res) => {
     const {tokenId} = req.body;
     client.verifyIdToken({idToken: tokenId, audience: "909343250416-nj79c4cachka2hbd0dptdl6rp36feql3.apps.googleusercontent.com"}).then(response =>{
         const{email_verified, name, email, picture, at_hash} = response.payload;
-        //console.log(response.payload);
+        console.log(response.payload);
         console.log(name, email, picture, at_hash);
-        if(email_verified)
-        {
+      
             blogUser.findOne({email}, (err, user)=>{
                 if(err)
                 {
@@ -95,34 +105,36 @@ router.post('/googlelogin', /*passport.authenticate('local', {session : false}),
                     {
                        const {_id, username, role, userImageUrl, email} = user; 
                        const token = signDaToken(_id);
-                        res.cookie('access_token', token, {httpOnly: true, sameSite:true});
+                        res.cookie('access_token', token, {httpOnly: true, sameSite:"none", secure:true, path: '/'});
                         res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl},message:{msgError: false}})
                     }
                     else
                     {
-                        const username = name;
+                       /*  const username = name;
                         const password = at_hash;
                         const role = "user";
                         const email = email;
                         const userImageUrl = picture;
-                        
+                        const cloudinaryId = ""; */
                         const newUser = new blogUser(
                         {
-                            username, 
-                            password,
-                            role, 
-                            emaill, 
-                            userImageUrl
-                            
+                            username: name, 
+                            password: at_hash,
+                            role: "user", 
+                            email: email, 
+                            //Missing a comma here caused a CORS error.....:)
+                            userImageUrl: picture,
+                            cloudinaryId: ""
                         });
-                        newUser.save(err=>{
+                        newUser.save(err=>
+                        {
                             if(err)
                                 res.status(500).json({message: {msgBody : "Error has occured at server after save:" + err, msgError: true}});
                             else
                             {
                                 const {_id, username, role, userImageUrl, email} = newUser; 
                                 const token = signDaToken(_id);
-                                res.cookie('access_token', token, {httpOnly: true, sameSite:true});
+                                res.cookie('access_token', token, {httpOnly: true, sameSite:"none", secure:true, path: '/'});
                                 res.status(200).json({isAuthenticated: true, user: {_id, username,email, role, userImageUrl}, message:{msgError: false}})
                             }                       
                          });
@@ -131,12 +143,12 @@ router.post('/googlelogin', /*passport.authenticate('local', {session : false}),
             });
 
 
-        }
+        
     })
 });
 
 router.get('/logout', passport.authenticate('jwt', {session: false}), (req, res)=>{
-    res.clearCookie('access_token');
+    res.clearCookie('access_token',{httpOnly: true, sameSite:"none", secure:true,path: '/'});
     res.status(200).json({user:{username:"", role:"", userImageUrl:""}, success : true});
 });
 
@@ -169,23 +181,34 @@ router.get('/singleUser/:id',(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.put('/updateUserPic/:id',  upload.single('newUserImage'), (req, res) =>
+router.put('/updateUserPic/:id',  upload.single('newUserImage'), async (req, res) =>
 {
-    blogUser.findById(req.params.id)
-    .then(user => 
-        {
-            user.userImageUrl = req.file.filename,
-            user.username = user.username,
-            user.email = user.email,
-            user.bio = user.bio
-            user.role = user.role,
-            user.password = user.password
+    try
+    {
+        
+        const uploadResult = await cloudinary.uploader.upload(req.file.path);
+        blogUser.findById(req.params.id)
+        .then(async user => 
+            {
+                user.cloudinaryId && await cloudinary.uploader.destroy(user.cloudinaryId);
+                user.userImageUrl = uploadResult.secure_url;
+                user.cloudinaryId = uploadResult.public_id;
+                user.username = user.username;
+                user.email = user.email;
+                user.bio = user.bio;
+                user.role = user.role;
+                user.password = user.password;
 
-            user.save()
-            .then(() => res.json({message: {msgBody : "User Updated With New Pic Bro!", msgError: false}}))
+                user.save()
+                .then(() => res.json({message: {msgBody : "User Updated With New Pic Bro!", msgError: false}}))
+                .catch(err => res.status(400).json('Error: ' + err));
+            })
             .catch(err => res.status(400).json('Error: ' + err));
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
+    }
+    catch (err) 
+    {
+        console.log(err);
+    }
 });
 
 router.put('/updateUserBio/:id',   (req, res) =>

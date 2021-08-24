@@ -18,6 +18,7 @@ const blogPostSchema = new Schema({
     summary:{type: String, required: true, minlength: 15},
     body:{type: String, required: true, minlength: 50, trim: true},
     imageUrl:{type: String, required: true, default: "placeHolder.jpg"},
+    cloudinaryId: {type: String,  trim:true},
     readTime:{type:Number, required:true},
     tags: {type: Array},
         enum: ['Exercise', 'Sleep', 'Nutrition', 'Memory', 'Emotion', 

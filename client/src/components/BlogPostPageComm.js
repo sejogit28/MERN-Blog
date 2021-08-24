@@ -274,7 +274,7 @@ const BlogPostSinglePageComment = props =>
     
     return(
         <Comment key={props.comm._id}>
-                     <Comment.Avatar  src={`/UserImages/${props.comm.posterImageUrl}`}/>                             
+                     <Comment.Avatar  src={props.comm.posterImageUrl}/>                             
                         <Comment.Content>
                             <Comment.Author>
                                 <h1>{props.comm.username}</h1>

@@ -181,7 +181,7 @@ const UserProfilePage = props => {
                 userInfo &&
                 /* Enter Bio/Upload new Profile Pic == New Routes... */
                     <Card raised>
-                        <Image src={`/UserImages/${userInfo.userImageUrl}`} wrapped ui={false} />
+                        <Image src={userInfo.userImageUrl} wrapped ui={false} />
                         <Card.Content>
                             <Card.Header>Username: {userInfo.username} <br/> Email: {userInfo.email}</Card.Header>
                             <Card.Meta>

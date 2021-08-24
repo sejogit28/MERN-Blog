@@ -3,19 +3,39 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');  
 let blogPosts = require('./blogModels/blogPostsModel');
-
+//var passport = require()
 
 require('dotenv').config();
 
 const blogApp = express();
+blogApp.set("trust proxy", 1);
 const blogPort = process.env.PORT || 5000;
 
-const http = require('http').Server(blogApp);
-const io = require('socket.io')(http);
 
-blogApp.use(cors());
+
+blogApp.use(
+    cors(
+            {
+                credentials: true, 
+                origin:'https://fervent-darwin-5bcd5e.netlify.app'
+            }
+        ));
+
 blogApp.use(express.json());
+//blogApp.enable('trust proxy');
 blogApp.use(cookieParser());
+
+
+//const http = require('http').Server(blogApp);
+const http = require('http').createServer(blogApp);
+const io = require('socket.io')(http, 
+{
+    cors: 
+    {
+        origin:"https://fervent-darwin-5bcd5e.netlify.app",
+        credentials: true
+    }
+});
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}

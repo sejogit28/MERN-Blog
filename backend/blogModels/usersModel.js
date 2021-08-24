@@ -27,8 +27,9 @@ const userSchema = new Schema({
         default: "placeHolder.jpg"
     },
     role: {type: String, required: true, trim:true},
+    cloudinaryId: {type: String,  trim:true},
     email:{type:String, required: true, unique:true, trim:true, minlength: 5},
-    bio: {type:String, minlength: 3}
+    bio: {type:String}
     },
     {
         timestamps: true,

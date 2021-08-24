@@ -3,7 +3,7 @@
 const BlogPostService = {
         getBlogPosts : () =>
         {
-            return fetch('/blogPost/blogList')
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/blogList')
             .then(response =>{
                  if (response.status !== 401)
                 {
@@ -16,14 +16,14 @@ const BlogPostService = {
 
         getBlogPostPagi : (pageNum) => 
         {
-            return fetch(`blogPost/blogPagi?page=${pageNum}`)
+            return fetch(`https://sejomernblogapi.herokuapp.com/blogPost/blogPagi?page=${pageNum}`)
             .then((res) => res.json())
             
         },
 
         getBlogPost : (id) =>
         {
-            return fetch('/blogPost/'+id)
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/'+id)
             .then(res => 
                 {
                     if(res.status !== 401)
@@ -38,7 +38,7 @@ const BlogPostService = {
         addBlogPost : (formData) => 
         {
             console.log(formData);
-          return fetch('/blogPost/add', 
+          return fetch('https://sejomernblogapi.herokuapp.com/blogPost/add', 
           {
               method: "POST",
               body : formData,
@@ -56,7 +56,7 @@ const BlogPostService = {
 
         editBlogPostNoPic : (id, editedBlogPost) =>
         {
-            return fetch('/blogPost/updateNoPic/'+id,
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/updateNoPic/'+id,
             {
               method: "put",
               /*This needed to be specified as a put method, most likely cause thats 
@@ -81,7 +81,7 @@ const BlogPostService = {
 
         editBlogPostPic : (id, editedBlogPostPicFormData) =>
         {
-            return fetch('/blogPost/updatePic/'+id,
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/updatePic/'+id,
             {
               method: "PUT",
               body : editedBlogPostPicFormData,           
@@ -98,7 +98,7 @@ const BlogPostService = {
         
         deleteBlogPost : id =>
         {
-            return fetch('/blogPost/delete/'+id, 
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/delete/'+id, 
             {
                 method: "delete"
             })
@@ -115,7 +115,7 @@ const BlogPostService = {
 
         addComment: (id, newComm) => 
         {
-            return fetch('/blogPost/update/'+id+'/addcomm',
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/update/'+id+'/addcomm',
             /*It would appear tha that if you don't put the first "/" 
             (/blogPost/update as opposed to blogPost/update)react assumes 
             that you want everything to the left of the url that is in the 
@@ -140,7 +140,7 @@ const BlogPostService = {
 
         editComment : (id, commId, newCommBody) => 
         {
-            return fetch('/blogPost/update/'+id+'/updatecomm/'+commId ,
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/update/'+id+'/updatecomm/'+commId ,
             {
                 method: "put",
                 body : JSON.stringify(newCommBody),
@@ -161,7 +161,7 @@ const BlogPostService = {
 
         deleteComment : (id, commId) =>
         {
-            return fetch('/blogPost/update/'+id+'/deletecomm/'+commId,
+            return fetch('https://sejomernblogapi.herokuapp.com/blogPost/update/'+id+'/deletecomm/'+commId,
             {
                 method: "put"
             }).then(res => 

@@ -83,9 +83,13 @@ const Register = props =>
         formData.append("password", password);
         formData.append("email", email);
         formData.append("bio",  bio);
-        formData.append('userImage', file);
         formData.append('role', 'user');
+        formData.append('userImage', file);
 
+        for (var value of formData.values()) 
+        {
+            console.log(value);
+        }
         AuthServices.register(formData).then(data=> {
         const {message} = data;
         setMessage(message);
@@ -97,6 +101,9 @@ const Register = props =>
                 props.history.push('/login');
             }, 2000)
         }     
+        }).catch(err =>
+        {
+            console.log(err);
         });
     }
 

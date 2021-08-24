@@ -11,7 +11,7 @@ const BlogCard = props =>
            props.blogpost.createdAt &&
           <Card raised fluid={props.fluidTrue} key={props.blogpost._id} >
                 {/* The below src had to be in that format to work(couldn't use normal quotes and an "+") */}
-                 <Image as={Link} to={"/posts/"+props.blogpost._id} style={{'max-height': '200px', 'overflow':'hidden'}} src={`/BlogPostImages/${props.blogpost.imageUrl}`} wrapped ui={true} />
+                 <Image as={Link} to={"/posts/"+props.blogpost._id} style={{'max-height': '200px', 'overflow':'hidden'}} src={props.blogpost.imageUrl} wrapped ui={true} />
                 <Card.Content as={Link} to={"/posts/"+props.blogpost._id}>
                     
                         <Card.Header><h1>{props.blogpost.title}</h1></Card.Header>

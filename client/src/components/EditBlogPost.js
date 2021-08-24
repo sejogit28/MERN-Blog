@@ -6,7 +6,7 @@ import 'medium-editor/dist/css/themes/default.css'
 
 import BlogPostService from '../Services/BlogPostService';
 import PopupMessage from './PopupMessage';
-
+import tagOptions from './TagOptions';
 
 
 const EditBlogPostPage = props => 
@@ -40,8 +40,7 @@ const EditBlogPostPage = props =>
     const[date, setDate] = useState(new Date())
     const[tags, setTags] = useState([]);  */
     
-    const tagOptions = ['Exercise', 'Memory', 'Neuroplasticity', 'Sleep', 
-                        'Learning', 'Emotion', 'Nutrition'];
+    
         
     const [message, setMessage] = useState(
     {
@@ -119,25 +118,23 @@ const EditBlogPostPage = props =>
         
         if(e.target.checked)
         {
-            //let newArr = [];
+           
             editedBlogPost.tags.push(checkedVal)
             setEditedBlogPost({...editedBlogPost, ...editedBlogPost.tags});
             console.log(editedBlogPost.tags)
         }
         else
         {
-            //let newArr = [];
-            let result = clearTags(editedBlogPost.tags, e.target.name);
-            //newArr = result;
-            setEditedBlogPost({...editedBlogPost, ...editedBlogPost.tags = result});
+            
+            
+            let currentValueIndex = editedBlogPost.tags.indexOf(e.target.value);
+            let result = editedBlogPost.tags.splice(currentValueIndex, 1);
+            setEditedBlogPost({...editedBlogPost, [{...editedBlogPost.tags}] : {...result}});
             console.log(editedBlogPost.tags);
         }
     };
 
-    /*  const onFileChange = e => 
-    {
-        setFile(e.target.files[0]);
-    } */
+  
     
   
     

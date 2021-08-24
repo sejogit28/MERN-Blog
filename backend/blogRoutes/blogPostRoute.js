@@ -1,24 +1,9 @@
 const express = require('express')
 const router = express.Router();
 let blogPosts = require('../blogModels/blogPostsModel');
-const multer = require('multer');
+const upload = require('../utils/multer');
+const cloudinary = require("../utils/cloudinary");
 
-
-const storage = multer.diskStorage({
-    destination: function (request, file, callback){
-        callback(null, 'C:/Users/Sean/Desktop/React/mern-blog/client/public/BlogPostImages');
-    },
-    filename: function(request, file, callback){
-        callback(null, Date.now() + file.originalname.replace(/\s+/g, ''));
-    },
-})
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024*1024*3
-    },
-})
 
 router.get('/blogList',(req, res) =>
 {
@@ -46,9 +31,11 @@ router.get('/:id',(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.post('/add', upload.single('blogImage'), (req, res)=>
+router.post('/add', upload.single('blogImage'), async (req, res)=>
 {
-    console.log(req.file);
+    try 
+    {
+        const uploadResult = await cloudinary.uploader.upload(req.file.path);
 
         const newblogPost = new blogPosts(
             {
@@ -57,34 +44,56 @@ router.post('/add', upload.single('blogImage'), (req, res)=>
                 summary: req.body.summary,
                 body: req.body.body,
                 readTime: req.body.readTime,
-                imageUrl: req.file.filename,
+                imageUrl:  uploadResult.secure_url,
+                cloudinaryId:  uploadResult.public_id,
                 tags: req.body.tags
             })
-
+    
         newblogPost.save()
         .then(() => res.json({message: {msgBody : "New Post Posted Bro!", msgError: false}}))
         .catch(err => res.status(400))
+
+    }     
+
+    catch (err) 
+    {
+        console.log(err);
+
+    }
 });
 
 
-router.put('/updatePic/:postId', upload.single('blogImage'), (req, res)=>
+router.put('/updatePic/:postId', upload.single('blogImage'), async (req, res)=>
 {
-    blogPosts.findById(req.params.postId)
-    .then(bPost => 
-        {
-            bPost.title = bPost.title,
-                bPost.author = bPost.author,
-                bPost.summary = bPost.summary,
-                bPost.body = bPost.body,
-                bPost.readTime = bPost.readTime,
-                bPost.imageUrl = req.file.filename,
-                bPost.tags = bPost.tags
+    try
+    {
 
-                 bPost.save()
-        .then(() => res.json({message: {msgBody : "Post Updated With New Pic Bro!", msgError: false}}))
-        .catch(err => res.status(400).json('Error: ' + err));
+        const uploadResult = await cloudinary.uploader.upload(req.file.path);
+    
+        blogPosts.findById(req.params.postId)
+        .then(async bPost => 
+        {
+            bPost.cloudinaryId && await cloudinary.uploader.destroy(bPost.cloudinaryId);
+            bPost.imageUrl = uploadResult.secure_url;
+            bPost.cloudinaryId = uploadResult.public_id;
+            bPost.title = bPost.title,
+            bPost.author = bPost.author,
+            bPost.summary = bPost.summary,
+            bPost.body = bPost.body,
+            bPost.readTime = bPost.readTime,
+
+            bPost.tags = bPost.tags
+    
+            bPost.save()
+            .then(() => res.json({message: {msgBody : "Post Updated With New Pic Bro!", msgError: false}}))
+            .catch(err => res.status(400).json('Error: ' + err));
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+            .catch(err => res.status(400).json('Error: ' + err));
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
        
 
 });
@@ -114,7 +123,12 @@ router.put('/updateNoPic/:postId',  (req, res)=>
 
 router.delete('/delete/:postId', (req, res)=> {
     blogPosts.findByIdAndDelete(req.params.postId)
-    .then(() => res.json({message: {msgBody : "Post Deleted Bro!", msgError: false}}))
+    .then(async deletedBlogPost => 
+    
+        {
+            await cloudinary.uploader.destroy(deletedBlogPost.cloudinaryId);
+            res.json({message: {msgBody : "Post Deleted Bro!", msgError: false}})
+        })
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
