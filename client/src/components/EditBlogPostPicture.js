@@ -93,7 +93,7 @@ const EditBlogPostPicture = props => {
                 </Grid.Row>
 
 
-                <Grid.Row>
+                <Grid.Row centered>
                    { blogPost &&
                    <Card.Group >
                     <BlogCard  fluidTrue={false} blogpost={blogPost}/>
@@ -106,8 +106,8 @@ const EditBlogPostPicture = props => {
 
                
 
-            <Grid.Row>
-                <Grid.Column>
+            <Grid.Row centered>
+                <Grid.Column >
                     <Form onSubmit={onSubmitForm}   encType="multipart/form-data" >         
                             
                    

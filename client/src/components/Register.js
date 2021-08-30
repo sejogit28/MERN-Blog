@@ -74,6 +74,33 @@ const Register = props =>
         setPassword('');
     }
 
+    const onDemoUserLogin = () =>
+    {
+        const user = 
+        {
+            username: "Demo User",
+            password: "D8f8nd@DU"
+        }
+        /* user.username = "Demo User";
+        user.password = "D8f8nd@DU"; */
+        AuthServices.login(user).then(data=> 
+        {
+            console.log(data);
+            const{isAuthenticated, user, message} = data;
+            if(isAuthenticated)
+            {
+                authContext.setUser(user);
+                authContext.setIsAuthenticated(isAuthenticated);
+                props.history.push('/');         
+            }
+            else
+            {
+                setMessage(message);
+            }
+        });
+
+    }
+
     const onSubmitForm = e => 
     {
         e.preventDefault();
@@ -133,7 +160,17 @@ const Register = props =>
             </Grid.Row>
 
             <br/>
+            <Grid.Row>
+                <h2>- OR -</h2>
+            </Grid.Row>
+            <br/> 
 
+            <Grid.Row>
+                <Button color='black' onClick={onDemoUserLogin}>
+                    1-Click Log-In as a Demo User!
+                </Button>
+            </Grid.Row>
+            <br/>
             <Grid.Row>
                 <h2>- OR -</h2>
             </Grid.Row>

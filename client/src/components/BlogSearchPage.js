@@ -102,6 +102,7 @@ const BlogSearchPage = () =>
                     <Button onClick={()=>{returnAllPosts()}}>All</Button>
                     <Button onClick={()=>filterByTag("Exercise")}>Exercise</Button>
                     <Button onClick={()=>filterByTag("Memory")}>Memory</Button>
+                    <Button onClick={()=>filterByTag("Discussion")}>Discussion</Button>
                     <Button onClick={()=>filterByTag("Neuroplasticity")}>Neuroplasticity</Button>
                 </Button.Group> 
             </Grid.Row>
@@ -110,6 +111,7 @@ const BlogSearchPage = () =>
                     <Button onClick={()=>filterByTag("Sleep")}>Sleep</Button>
                     <Button onClick={()=>filterByTag("Learning")}>Learning</Button>
                     <Button onClick={()=>filterByTag("Emotion")}>Emotion</Button>
+                    <Button onClick={()=>filterByTag("Coding")}>Coding</Button>
                     <Button onClick={()=>filterByTag("Nutrition")}>Nutrition</Button>
 
                 </Button.Group> 

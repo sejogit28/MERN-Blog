@@ -1,4 +1,4 @@
-const tagOptions = ['Exercise', 'Memory', 'Neuroplasticity', 'Sleep', 
-                        'Learning', 'Emotion', 'Nutrition', 'Coding', 'Discussion'];
+const tagOptions = ['Exercise', 'Memory', 'Discussion','Neuroplasticity', 'Sleep', 
+                        'Learning', 'Emotion', 'Nutrition', 'Coding'];
 
 export default tagOptions;

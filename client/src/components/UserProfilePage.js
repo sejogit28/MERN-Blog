@@ -176,67 +176,67 @@ const UserProfilePage = props => {
                 </Grid.Row>
 
 
-                <Grid.Row>
-                   {
-                userInfo &&
-                /* Enter Bio/Upload new Profile Pic == New Routes... */
-                    <Card raised>
-                        <Image src={userInfo.userImageUrl} wrapped ui={false} />
-                        <Card.Content>
-                            <Card.Header>Username: {userInfo.username} <br/> Email: {userInfo.email}</Card.Header>
-                            <Card.Meta>
-                                <span className='date'>Joined: {userInfo.createdAt.substring(0,10)}</span>
-                            </Card.Meta>
-                            <Card.Description>
-                                {userInfo.bio ? userInfo.bio : "No Bio entered"}
-                            </Card.Description>
-                        </Card.Content>
-                            <Card.Content extra>
-                                {!newBioForm ?
-                                <Button basic color='black' animated onClick={showUpdateBioForm}>
-                                    <Button.Content visible>
-                                        Edit Bio?
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name='edit' />
-                                    </Button.Content>
-                                </Button>
-                                  :
-                                <Button basic color='black' animated onClick={() =>{setNewBioForm(false)}}>
-                                   <Button.Content visible>
-                                        Cancel
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name='cancel' />
-                                    </Button.Content>
-                                </Button>
-                                }
+                <Grid.Row centered>
+                {
+                        userInfo &&
+                        /* Enter Bio/Upload new Profile Pic == New Routes... */
+                            <Card raised>
+                                <Image src={userInfo.userImageUrl} wrapped ui={false} />
+                                <Card.Content>
+                                    <Card.Header>Username: {userInfo.username} <br/> Email: {userInfo.email}</Card.Header>
+                                    <Card.Meta>
+                                        <span className='date'>Joined: {userInfo.createdAt.substring(0,10)}</span>
+                                    </Card.Meta>
+                                    <Card.Description>
+                                        {userInfo.bio ? userInfo.bio : "No Bio entered"}
+                                    </Card.Description>
+                                </Card.Content>
+                                    <Card.Content extra>
+                                        {!newBioForm ?
+                                        <Button basic color='black' animated onClick={showUpdateBioForm}>
+                                            <Button.Content visible>
+                                                Edit Bio?
+                                            </Button.Content>
+                                            <Button.Content hidden>
+                                                <Icon name='edit' />
+                                            </Button.Content>
+                                        </Button>
+                                        :
+                                        <Button basic color='black' animated onClick={() =>{setNewBioForm(false)}}>
+                                        <Button.Content visible>
+                                                Cancel
+                                            </Button.Content>
+                                            <Button.Content hidden>
+                                                <Icon name='cancel' />
+                                            </Button.Content>
+                                        </Button>
+                                        }
 
-                                {
-                                !profilePicForm ?
-                            
-                                <Button basic color='black' animated onClick={showEditProfilePicForm}>
-                                    <Button.Content visible>
-                                        Change Profile Pic
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name='upload' />
-                                    </Button.Content>
-                                </Button>
-                                :
-                                <Button basic color='black' animated onClick={() =>{setProfilePicForm(false)}}>
-                                   <Button.Content visible>
-                                        Cancel
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name='cancel' />
-                                    </Button.Content>
-                                </Button>
-                                
-                                }
-                            </Card.Content>
-                    </Card> 
-            }
+                                        {
+                                        !profilePicForm ?
+                                    
+                                        <Button basic color='black' animated onClick={showEditProfilePicForm}>
+                                            <Button.Content visible>
+                                                Change Profile Pic
+                                            </Button.Content>
+                                            <Button.Content hidden>
+                                                <Icon name='upload' />
+                                            </Button.Content>
+                                        </Button>
+                                        :
+                                        <Button basic color='black' animated onClick={() =>{setProfilePicForm(false)}}>
+                                        <Button.Content visible>
+                                                Cancel
+                                            </Button.Content>
+                                            <Button.Content hidden>
+                                                <Icon name='cancel' />
+                                            </Button.Content>
+                                        </Button>
+                                        
+                                        }
+                                    </Card.Content>
+                            </Card> 
+                }
 
                     <PopupMessage
                         onDismiss={()=>{dismissMessage()}}
@@ -256,7 +256,7 @@ const UserProfilePage = props => {
                
             {
             profilePicForm &&
-            <Grid.Row>
+            <Grid.Row centered>
                 <Grid.Column>
                     <Form onSubmit={onSubmitProfilePicForm}   encType="multipart/form-data" >         
 
@@ -298,7 +298,7 @@ const UserProfilePage = props => {
 
         {
         newBioForm &&
-        <Grid.Row>
+        <Grid.Row centered>
                 <Grid.Column>
                     <Form onSubmit={onSubmitNewBioForm}>         
                             

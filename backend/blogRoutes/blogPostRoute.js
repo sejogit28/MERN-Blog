@@ -50,7 +50,7 @@ router.post('/add', upload.single('blogImage'), async (req, res)=>
             })
     
         newblogPost.save()
-        .then(() => res.json({message: {msgBody : "New Post Posted Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "New Post Posted successfully!", msgError: false}}))
         .catch(err => res.status(400))
 
     }     
@@ -85,7 +85,7 @@ router.put('/updatePic/:postId', upload.single('blogImage'), async (req, res)=>
             bPost.tags = bPost.tags
     
             bPost.save()
-            .then(() => res.json({message: {msgBody : "Post Updated With New Pic Bro!", msgError: false}}))
+            .then(() => res.json({message: {msgBody : "Post pic ppdatedsuccessfully!", msgError: false}}))
             .catch(err => res.status(400).json('Error: ' + err));
         })
             .catch(err => res.status(400).json('Error: ' + err));
@@ -113,7 +113,7 @@ router.put('/updateNoPic/:postId',  (req, res)=>
 
             bPost.save()
             
-        .then(() => res.json({message: {msgBody : "Post Updated Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "Post updated successfully!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));
@@ -127,7 +127,7 @@ router.delete('/delete/:postId', (req, res)=> {
     
         {
             await cloudinary.uploader.destroy(deletedBlogPost.cloudinaryId);
-            res.json({message: {msgBody : "Post Deleted Bro!", msgError: false}})
+            res.json({message: {msgBody : "Post Deleted Sucessfully", msgError: false}})
         })
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -153,7 +153,7 @@ router.put('/update/:postId/addcomm',(req, res)=>
            })
 
             bPost.save()
-        .then(() => res.json({message: {msgBody : "Comment added Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "Comment added successfully!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));
@@ -183,7 +183,7 @@ router.put('/update/:postId/replyToComm/:commId',(req, res)=>
         })
 
             bPost.save()
-        .then(() => res.json({message: {msgBody : "Reply comment added Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "Reply comment added successfuly!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
@@ -198,7 +198,7 @@ router.put('/update/:postId/updateComm/:commId',(req, res)=>
             currComm.commBody = req.body.commBody;     
 
         bPost.save()
-        .then(() => res.json({message: {msgBody : "Comment Updated Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "Comment Updated successfully!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));
@@ -214,7 +214,7 @@ router.put('/update/:postId/deletecomm/:commId', async (req, res)=>
         
 
         bPost.save()
-        .then(() => res.json({message: {msgBody : "Comment deleted Bro!", msgError: false}}))
+        .then(() => res.json({message: {msgBody : "Comment deleted successfully!", msgError: false}}))
         .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));

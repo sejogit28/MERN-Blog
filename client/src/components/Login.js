@@ -42,6 +42,27 @@ const onInputChange = e =>
 {
     setUser({...user, [e.target.name] : e.target.value});
 }
+
+const onDemoUserLogin = () =>
+{
+        user.username = "Demo User";
+        user.password = "D8f8nd@DU";
+        AuthServices.login(user).then(data=> {
+        console.log(data);
+        const{isAuthenticated, user, message} = data;
+        if(isAuthenticated)
+        {
+            authContext.setUser(user);
+            authContext.setIsAuthenticated(isAuthenticated);
+            props.history.push('/');         
+        }
+        else
+        {
+            setMessage(message);
+        }
+    });
+
+}
 const onSubmitForm = e => 
 {
     e.preventDefault();
@@ -120,6 +141,18 @@ const onSubmitForm = e =>
         <Grid.Row>
             {message ? <Message message={message}/> : null }
         </Grid.Row>
+
+        <br/>
+
+            <Grid.Row>
+                <h2>- OR -</h2>
+            </Grid.Row>
+            <br/> 
+
+            <Button color='black' onClick={onDemoUserLogin}>
+                1-Click Log-In as a Demo User!
+            </Button>
+
         </Grid>
     )
 }

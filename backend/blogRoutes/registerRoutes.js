@@ -62,7 +62,7 @@ router.post('/register', upload.single('userImage'), async (req, res)=>{
                     if(err)
                         res.status(500).json({message: {msgBody : "Error has occured at server while attempting to save. Operation cancelled", msgError: true}});
                     else
-                        res.status(201).json({message: {msgBody : "New user registered bro!!", msgError: false}});
+                        res.status(201).json({message: {msgBody : "New user registered successfully!", msgError: false}});
         
                 })
             }
@@ -200,7 +200,7 @@ router.put('/updateUserPic/:id',  upload.single('newUserImage'), async (req, res
                 user.password = user.password;
 
                 user.save()
-                .then(() => res.json({message: {msgBody : "User Updated With New Pic Bro!", msgError: false}}))
+                .then(() => res.json({message: {msgBody : "User Pic Updated Successfully!", msgError: false}}))
                 .catch(err => res.status(400).json('Error: ' + err));
             })
             .catch(err => res.status(400).json('Error: ' + err));
