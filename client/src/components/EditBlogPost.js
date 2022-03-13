@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Form, Button, Divider } from "semantic-ui-react";
 import Editor from "react-medium-editor";
 import "medium-editor/dist/css/medium-editor.css";
@@ -28,7 +28,6 @@ const EditBlogPostPage = (props) => {
     header: "",
     content: "",
   });
-  let timerID = useRef(null);
 
   const dismissMessage = () => {
     setMessage({
@@ -60,11 +59,11 @@ const EditBlogPostPage = (props) => {
   const onCheckBoxChange = (e) => {
     const checkedVal = e.target.name;
 
-    function clearTags(tagsArr, value) {
+    /* function clearTags(tagsArr, value) {
       return tagsArr.filter(function (tag) {
         return tag !== value;
       });
-    }
+    } */
 
     if (e.target.checked) {
       editedBlogPost.tags.push(checkedVal);
@@ -102,7 +101,7 @@ const EditBlogPostPage = (props) => {
         header: "Article Posted!!!",
       });
 
-      timerID = setTimeout(() => {
+      setTimeout(() => {
         dismissMessage();
       }, 4000);
 

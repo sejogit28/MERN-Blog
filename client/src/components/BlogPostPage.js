@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Grid,
   Segment,
@@ -13,9 +13,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
-//import { convertFromRaw} from 'draft-js';
-//import {stateToHTML} from 'draft-js-export-html';
-
+import { localApiUrl } from "../Services/ServiceUtils";
 import { AuthContext } from "../context/AuthContext";
 import BlogPostService from "../Services/BlogPostService";
 import BlogPostSinglePageComment from "./BlogPostPageComm";
@@ -26,7 +24,6 @@ const BlogPostSinglePage = (props) => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const [loaded, setLoaded] = useState(false);
   const [socket, setSocket] = useState(null);
-  let timerID = useRef(null);
   const [blogPost, setBlogPost] = useState({
     createdAt: "",
     comments: [],
@@ -67,7 +64,7 @@ const BlogPostSinglePage = (props) => {
       setLoaded(true);
     });
 
-    const socket = io("https://sejomernblogapi.herokuapp.com/", {
+    const socket = io(`${localApiUrl}/`, {
       withCredentials: true,
     });
     /* in this video: https://youtu.be/tBKUxOdK5Q8?t=2633 a global state was used to 
@@ -177,7 +174,7 @@ const BlogPostSinglePage = (props) => {
         header: "Comment Posted",
       });
 
-      timerID = setTimeout(() => {
+      setTimeout(() => {
         dismissCommMessage();
       }, 2000);
 

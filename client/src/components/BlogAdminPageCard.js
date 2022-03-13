@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Card } from "semantic-ui-react";
 
-import BlogPostService from "../Services/BlogPostService";
-
 const BlogAdminCard = (props) => {
   const deleteBlogPostFunc = () => {
     if (window.confirm("Really Delete this post?") === true) {

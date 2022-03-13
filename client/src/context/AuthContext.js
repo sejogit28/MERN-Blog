@@ -8,7 +8,7 @@ import AuthServices from "../Services/AuthServices";
  in a provider has access to the global state*/
 export const AuthContext = createContext();
 
-export default ({ children }) => {
+const ClientAuth = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -45,3 +45,5 @@ export default ({ children }) => {
     </div>
   );
 };
+
+export default ClientAuth;

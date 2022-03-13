@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Form, Button, Card } from "semantic-ui-react";
 import BlogCard from "./BlogMainPageCard";
 
@@ -18,7 +18,6 @@ const EditBlogPostPicture = (props) => {
     header: "",
     content: "",
   });
-  let timerID = useRef(null);
 
   const dismissMessage = () => {
     setMessage({

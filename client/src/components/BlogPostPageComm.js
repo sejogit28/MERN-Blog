@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Comment, Button, Form } from "semantic-ui-react";
 import moment from "moment";
 
@@ -6,12 +6,12 @@ import BlogPostService from "../Services/BlogPostService";
 import PopupMessage from "./PopupMessage";
 
 const BlogPostSinglePageComment = (props) => {
+  const { socket, blogPost, setBlogPost } = props;
   const [commActionTrigger, setCommActionTrigger] = useState(false);
   const [editCommTrigger, setEditCommTrigger] = useState(false);
   const [editCommValue, setEditCommValue] = useState({
     commBody: props.comm.commBody,
   });
-  let timerID = useRef(null);
 
   const [replyCommTrigger, setReplyCommTrigger] = useState(false);
   const [replyCommValue, setReplyCommValue] = useState({
@@ -32,13 +32,14 @@ const BlogPostSinglePageComment = (props) => {
   });
 
   useEffect(() => {
-    if (props.socket) {
-      props.socket.on("sendCommentToClient", (msg) => {
-        props.setBlogPost(msg);
+    if (socket) {
+      socket.on("sendCommentToClient", (msg) => {
+        setBlogPost(msg);
       });
-      return () => props.socket.off("sendCommentToClient");
+      return () => socket.off("sendCommentToClient");
     }
-  }, [props.socket, props.blogPost]);
+  }, [socket, blogPost, setBlogPost]);
+
   const editCommTriggerFunc = () => {
     setEditCommTrigger(!editCommTrigger);
   };
@@ -69,7 +70,7 @@ const BlogPostSinglePageComment = (props) => {
         header: "Comment Edited!",
       });
 
-      timerID = setTimeout(() => {
+      setTimeout(() => {
         dismissReplyCommMessage();
       }, 4000);
 
@@ -160,7 +161,7 @@ const BlogPostSinglePageComment = (props) => {
         header: "Reply Comment Posted",
       });
 
-      timerID = setTimeout(() => {
+      setTimeout(() => {
         dismissReplyCommMessage();
       }, 4000);
 

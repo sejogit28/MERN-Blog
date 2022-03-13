@@ -6,7 +6,7 @@ import { Menu } from "semantic-ui-react";
 
 const BlogNavBar = () => {
   const pathname = window.location.pathname;
-  const path = pathname === "/" ? "home" : pathname.substr(1);
+  const path = pathname === "/" ? "home" : pathname.substring(1);
 
   const [activeItem, setActiveItem] = useState(path);
 

@@ -9,13 +9,13 @@ const BlogPostSinglePageReplyComm = (props) => {
 
   useEffect(() => {
     let commentNum = 0;
-    props.postComments.map((comments) => {
+    props.postComments.forEach((comments) => {
       if (comments.parentcommfinder === props.parentCommentId) {
         commentNum++;
       }
     });
     setReplyCommNumber(commentNum);
-  }, []);
+  }, [props.parentCommentId, props.postComments]);
 
   let renderReplyComments = (parentCommId) =>
     props.postComments.map((comm, index) => (

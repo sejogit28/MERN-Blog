@@ -21,7 +21,6 @@ const UserProfilePage = (props) => {
     content: "",
   });
 
-  let timerID = useRef(null);
   const scrollRef = useRef(null);
   const dismissMessage = () => {
     setMessage({
@@ -40,11 +39,11 @@ const UserProfilePage = (props) => {
       setImageUrl(userData.userImageUrl);
       console.log(userData);
     });
-  }, []);
+  }, [props.match.params.id, userInfo, imageUrl]);
 
   const showEditProfilePicForm = () => {
     setProfilePicForm(true);
-    timerID = setTimeout(() => {
+    setTimeout(() => {
       window.scrollTo({
         top: scrollRef.current.offsetTop,
         behavior: "smooth",
@@ -57,7 +56,7 @@ const UserProfilePage = (props) => {
 
   const showUpdateBioForm = () => {
     setNewBioForm(true);
-    timerID = setTimeout(() => {
+    setTimeout(() => {
       window.scrollTo({
         top: scrollRef.current.offsetTop,
         behavior: "smooth",
@@ -92,7 +91,7 @@ const UserProfilePage = (props) => {
               header: "Bio Successfully Updated",
             });
 
-            timerID = setTimeout(() => {
+            setTimeout(() => {
               dismissMessage();
             }, 2000);
           }
@@ -122,7 +121,7 @@ const UserProfilePage = (props) => {
               header: "Profile Pic Successfully Updated",
             });
 
-            timerID = setTimeout(() => {
+            setTimeout(() => {
               dismissMessage();
             }, 2000);
           }
@@ -142,7 +141,7 @@ const UserProfilePage = (props) => {
           {userInfo && (
             /* Enter Bio/Upload new Profile Pic == New Routes... */
             <Card raised>
-              <Image src={userInfo.userImageUrl} wrapped ui={false} />
+              <Image src={imageUrl} wrapped ui={false} />
               <Card.Content>
                 <Card.Header>
                   Username: {userInfo.username} <br /> Email: {userInfo.email}

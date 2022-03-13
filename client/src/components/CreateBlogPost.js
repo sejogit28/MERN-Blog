@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState } from "react";
 import { Grid, Form, Button, Divider } from "semantic-ui-react";
 //import { EditorState, convertToRaw, getDefaultKeyBinding, RichUtils} from 'draft-js';
 import "draft-js/dist/Draft.css";
@@ -10,7 +10,6 @@ import "medium-editor/dist/css/themes/default.css";
 //import MyEditor from '../components/CreateBlogPostEditor';
 import BlogPostService from "../Services/BlogPostService";
 import PopupMessage from "./PopupMessage";
-import { AuthContext } from "../context/AuthContext";
 import tagOptions from "./TagOptions";
 
 const CreateBlogPostPage = (props) => {
@@ -30,7 +29,6 @@ const CreateBlogPostPage = (props) => {
     header: "",
     content: "",
   });
-  let timerID = useRef(null);
 
   const dismissMessage = () => {
     setMessage({
@@ -94,7 +92,7 @@ const CreateBlogPostPage = (props) => {
         header: "Article Posted!!!",
       });
 
-      timerID = setTimeout(() => {
+      setTimeout(() => {
         dismissMessage();
       }, 2000);
 
