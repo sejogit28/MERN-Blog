@@ -1,153 +1,130 @@
-import React, {useEffect, useState} from 'react';
-import { Grid, Card, Input, Button, Placeholder } from 'semantic-ui-react';
+import React, { useEffect, useState } from "react";
+import { Grid, Card, Input, Button, Placeholder } from "semantic-ui-react";
 
+import BlogPostService from "../Services/BlogPostService";
+import BlogCard from "./BlogMainPageCard";
 
-import BlogPostService from '../Services/BlogPostService';
-import BlogCard from './BlogMainPageCard';
+const BlogSearchPage = () => {
+  const [loaded, setLoaded] = useState(false);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
+  useEffect(() => {
+    BlogPostService.getBlogPosts().then((data) => {
+      console.log(data);
+      setBlogPosts(data);
+      setLoaded(true);
+    });
+  }, []);
 
-const BlogSearchPage = () =>
-{
-    
+  useEffect(() => {
+    setFilteredPosts(
+      blogPosts.filter((post) => {
+        return post.title.toLowerCase().includes(searchTerm.toLowerCase());
+      })
+    );
+  }, [searchTerm, blogPosts]);
 
-    const [loaded, setLoaded] = useState(false);
-    const [blogPosts, setBlogPosts] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-//    const [searchType, setSearchType] = useState('');
-    const [filteredPosts, setFilteredPosts] = useState([]);
+  const returnAllPosts = () => {
+    BlogPostService.getBlogPosts().then((data) => {
+      console.log(data);
+      setBlogPosts(data);
+    });
+  };
 
-    useEffect(() =>{
-        BlogPostService.getBlogPosts().then(data =>{
-            console.log(data);
-            setBlogPosts(data);
-            setLoaded(true)
+  const filterByTag = (tagName) => {
+    setFilteredPosts(
+      blogPosts.filter((tagPost) => {
+        /*For every blogPost, filter it if its tags Array includes the tagName*/
 
-        });
-    }, []);
+        const filteredTags = tagPost.tags.includes(tagName);
+        console.log(filteredTags);
+        return filteredTags;
+      })
+    );
+  };
 
-    useEffect(() =>
-    {
-        setFilteredPosts(blogPosts.filter(post => 
-        {
-            return post.title.toLowerCase().includes(searchTerm.toLowerCase())
-        }))
-    }, [searchTerm, blogPosts])
+  const PlaceHolderCard = () => {
+    return (
+      <Card>
+        <Placeholder>
+          <Placeholder.Image square />
+        </Placeholder>
+        <Card.Content>
+          <Placeholder>
+            <Placeholder.Header>
+              <Placeholder.Line length="very short" />
+              <Placeholder.Line length="medium" />
+            </Placeholder.Header>
+            <Placeholder.Paragraph>
+              <Placeholder.Line length="short" />
+            </Placeholder.Paragraph>
+          </Placeholder>
+        </Card.Content>
+        <Card.Content extra>
+          <Button disabled color="black">
+            Read More
+          </Button>
+        </Card.Content>
+      </Card>
+    );
+  };
 
-   //return tagPost.tags.toLowerCase().includes(tagName.toLowerCase())
-   const returnAllPosts = () => 
-    {
-        BlogPostService.getBlogPosts().then(data =>{
-            console.log(data);
-            setBlogPosts(data);
-        })
-    }
+  return loaded ? (
+    <Grid container columns="equal">
+      <Grid.Row centered>
+        <h1>Search</h1>
+      </Grid.Row>
 
-    const filterByTag = tagName =>
-    {
-        setFilteredPosts(blogPosts.filter(tagPost => 
-            /* This need to be set filtered posts and not setBlogPosts in order to work the 
-            right way...not all the way sure rn...*/
-            {
-                /*For every blogPost, filter it if its tags Array includes the tagName*/
-                
-                const filteredTags = tagPost.tags.includes(tagName);
-                console.log(filteredTags)
-                return filteredTags
-            }))
-    }
-
-    const PlaceHolderCard = () =>
-    {
-        return(
-        <Card>
-              <Placeholder>
-                  <Placeholder.Image square />
-                </Placeholder>
-                 <Card.Content>
-                    <Placeholder>
-                        <Placeholder.Header>
-                            <Placeholder.Line length='very short' />
-                            <Placeholder.Line length='medium' />
-                        </Placeholder.Header>
-                        <Placeholder.Paragraph>
-                            <Placeholder.Line length='short' />
-                        </Placeholder.Paragraph>
-                    </Placeholder>
-                 </Card.Content>
-                 <Card.Content extra>
-                    <Button 
-                        disabled 
-                        color='black'>
-                        Read More
-                    </Button>
-                </Card.Content>
-                
-          </Card>
-        );
-    }
-    
-
-    return(
-        loaded?
-     <Grid container columns='equal'>
-            <Grid.Row centered>
-                <h1>Search</h1>
-            </Grid.Row>
-
-            <Grid.Row centered>
-                 <Input icon='search' placeholder='Search by title...' onChange={e => setSearchTerm(e.target.value)} />
-            </Grid.Row>
-            <Grid.Row centered>
-                <Button.Group>
-                    <Button onClick={()=>{returnAllPosts()}}>All</Button>
-                    <Button onClick={()=>filterByTag("Exercise")}>Exercise</Button>
-                    <Button onClick={()=>filterByTag("Memory")}>Memory</Button>
-                    <Button onClick={()=>filterByTag("Discussion")}>Discussion</Button>
-                    <Button onClick={()=>filterByTag("Neuroplasticity")}>Neuroplasticity</Button>
-                </Button.Group> 
-            </Grid.Row>
-            <Grid.Row centered>
-                <Button.Group>
-                    <Button onClick={()=>filterByTag("Sleep")}>Sleep</Button>
-                    <Button onClick={()=>filterByTag("Learning")}>Learning</Button>
-                    <Button onClick={()=>filterByTag("Emotion")}>Emotion</Button>
-                    <Button onClick={()=>filterByTag("Coding")}>Coding</Button>
-                    <Button onClick={()=>filterByTag("Nutrition")}>Nutrition</Button>
-
-                </Button.Group> 
-            </Grid.Row>
-            <Grid.Row>
-            <Card.Group centered itemsPerRow={3}> 
-            {
-            filteredPosts.reverse().map(blogpost => 
-            //.reverse() makes it so the most recently created post is displayed first
-                {
-                    return(
-                        
-                            
-                            <BlogCard key={blogpost._id} blogpost={blogpost}/>
-                        
-
-                        
-                    )
-                })
-            }
-            </Card.Group>   
-            </Grid.Row>
-        </ Grid>
-        :
-        <Card.Group
-            doubling
-            itemsPerRow={3} 
-            stackable
-        >
-          
-            <PlaceHolderCard/>
-            <PlaceHolderCard/>
-            <PlaceHolderCard/>
-
+      <Grid.Row centered>
+        <Input
+          icon="search"
+          placeholder="Search by title..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Grid.Row>
+      <Grid.Row centered>
+        <Button.Group>
+          <Button
+            onClick={() => {
+              returnAllPosts();
+            }}
+          >
+            All
+          </Button>
+          <Button onClick={() => filterByTag("Exercise")}>Exercise</Button>
+          <Button onClick={() => filterByTag("Memory")}>Memory</Button>
+          <Button onClick={() => filterByTag("Discussion")}>Discussion</Button>
+          <Button onClick={() => filterByTag("Neuroplasticity")}>
+            Neuroplasticity
+          </Button>
+        </Button.Group>
+      </Grid.Row>
+      <Grid.Row centered>
+        <Button.Group>
+          <Button onClick={() => filterByTag("Sleep")}>Sleep</Button>
+          <Button onClick={() => filterByTag("Learning")}>Learning</Button>
+          <Button onClick={() => filterByTag("Emotion")}>Emotion</Button>
+          <Button onClick={() => filterByTag("Coding")}>Coding</Button>
+          <Button onClick={() => filterByTag("Nutrition")}>Nutrition</Button>
+        </Button.Group>
+      </Grid.Row>
+      <Grid.Row>
+        <Card.Group centered itemsPerRow={3}>
+          {filteredPosts.reverse().map((blogpost) => {
+            return <BlogCard key={blogpost._id} blogpost={blogpost} />;
+          })}
         </Card.Group>
-     )
-        }   
+      </Grid.Row>
+    </Grid>
+  ) : (
+    <Card.Group doubling itemsPerRow={3} stackable>
+      <PlaceHolderCard />
+      <PlaceHolderCard />
+      <PlaceHolderCard />
+    </Card.Group>
+  );
+};
 
 export default BlogSearchPage;

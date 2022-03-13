@@ -1,158 +1,126 @@
-import React ,{useState, useEffect, useRef} from 'react';
-import {Grid, Form, Button, Card} from 'semantic-ui-react';
-import BlogCard from './BlogMainPageCard';
+import React, { useState, useEffect, useRef } from "react";
+import { Grid, Form, Button, Card } from "semantic-ui-react";
+import BlogCard from "./BlogMainPageCard";
 
-import PopupMessage from './PopupMessage';
+import PopupMessage from "./PopupMessage";
 
-import BlogPostService from '../Services/BlogPostService';
+import BlogPostService from "../Services/BlogPostService";
 
+const EditBlogPostPicture = (props) => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState();
+  const [blogPost, setBlogPost] = useState();
+  const [message, setMessage] = useState({
+    icon: "",
+    hidden: true,
+    positive: false,
+    negative: false,
+    header: "",
+    content: "",
+  });
+  let timerID = useRef(null);
 
-
-
-const EditBlogPostPicture = props => {
-
-    
-    const [imageUrl, setImageUrl] = useState("");
-    const [file, setFile] = useState();
-    const [blogPost, setBlogPost] = useState();
-    const [message, setMessage] = useState(
-    {
-        icon: "",
-        hidden: true,
-        positive: false,
-        negative: false,
-        header: "",
-        content: ""
+  const dismissMessage = () => {
+    setMessage({
+      icon: "",
+      hidden: true,
+      positive: false,
+      negative: false,
+      header: "",
+      content: "",
     });
-    let timerID = useRef(null);
+  };
 
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-    const dismissMessage = () => 
-    {
-        setMessage(
-        {
-            icon: "",
-            hidden: true,
-            positive: false,
-            negative: false,
-            header: "",
-            content: ""
-        })
-    }
+  const id = props.match.params.id;
 
-    const onFileChange = e => 
-    {
-        setFile(e.target.files[0]);
-    } 
+  useEffect(() => {
+    BlogPostService.getBlogPost(id).then((data) => {
+      setBlogPost(data);
+      setImageUrl(data.imageUrl);
+      console.log(data);
+    });
+  }, [id]);
 
-    const id = props.match.params.id;
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("imageUrl", imageUrl);
+    formData.append("blogImage", file);
+    BlogPostService.editBlogPostPic(id, formData).then((data) => {
+      console.log(data);
+      BlogPostService.getBlogPost(id).then((data) => {
+        setBlogPost(data);
+        setImageUrl(data.imageUrl);
+        console.log(data);
+      });
+    });
+  };
 
-   
+  return (
+    <>
+      <Grid padded="vertically">
+        <Grid.Row centered>
+          <h1>Edit This Post Pic!!</h1>
+        </Grid.Row>
 
-    useEffect(() => {
-        BlogPostService.getBlogPost(id)
-        .then(data=>
-            {
-                setBlogPost(data);
-                setImageUrl(data.imageUrl);
-                console.log(data);
-            });
-    }, [id]);
+        <Grid.Row centered>
+          {blogPost && (
+            <Card.Group>
+              <BlogCard fluidTrue={false} blogpost={blogPost} />
+            </Card.Group>
+          )}
+        </Grid.Row>
 
+        <Grid.Row centered>
+          <Grid.Column>
+            <Form onSubmit={onSubmitForm} encType="multipart/form-data">
+              <PopupMessage
+                onDismiss={() => {
+                  dismissMessage();
+                }}
+                hidden={message.hidden}
+                positive={message.positive}
+                negative={message.negative}
+                floating
+                icon={message.icon}
+                header={message.header}
+                content={message.content}
+              />
 
-    const onSubmitForm = e => 
-    {
-        e.preventDefault();
-         const formData = new FormData();
-         formData.append("imageUrl", imageUrl);
-         formData.append('blogImage', file);
-         BlogPostService.editBlogPostPic(id, formData).then(data =>
-         {
+              <br />
 
-            console.log(data);
-            BlogPostService.getBlogPost(id)
-            .then(data=>
-            {
-                setBlogPost(data);
-                setImageUrl(data.imageUrl);
-                console.log(data);
-            });
-            //props.history.push('/admin');                 
-         });
+              <Form.Input
+                disabled
+                label="Image Path"
+                name="imageUrl"
+                onChange={(e) => setImageUrl(e.target.value)}
+                value={imageUrl}
+                width={12}
+              />
 
-    }
+              <Form.Input
+                required
+                label="Image"
+                type="file"
+                onChange={onFileChange}
+                filename="blogImage"
+                id="blogImage"
+                width={6}
+              />
 
-
-    return (
-        <>
-            <Grid padded="vertically">
-                <Grid.Row centered>
-                    <h1>
-                        Edit This Post Pic!!
-                    </h1>
-                </Grid.Row>
-
-
-                <Grid.Row centered>
-                   { blogPost &&
-                   <Card.Group >
-                    <BlogCard  fluidTrue={false} blogpost={blogPost}/>
-                    </Card.Group>
-                    }
-                </Grid.Row>
-
-            
-           
-
-               
-
-            <Grid.Row centered>
-                <Grid.Column >
-                    <Form onSubmit={onSubmitForm}   encType="multipart/form-data" >         
-                            
-                   
-                        <PopupMessage
-                            onDismiss={()=>{dismissMessage()}}
-                            hidden={message.hidden}
-                            positive={message.positive}
-                            negative = {message.negative}
-                            floating
-                            icon={message.icon}
-                            header={message.header}
-                            content={message.content}
-                        />
-                    
-                        <br/>
-
-                    
-                        <Form.Input 
-                        disabled
-                        label="Image Path"
-                        name="imageUrl"
-                        onChange={(e) => setImageUrl(e.target.value)}
-                        value={imageUrl}
-                        width={12}
-                        />
-
-                        <Form.Input 
-                        required 
-                        label="Image"
-                        type="file"
-                        onChange={onFileChange}
-                        filename="blogImage"
-                        id="blogImage"
-                        width={6}
-                        /> 
-                        
-                        <Button type='submit' color="black">
-                            Edit This Posts Picture
-                        </Button>
-                    </Form>
-                </Grid.Column>
-            </Grid.Row>         
-        </Grid>
-        </>
-    )
-}
+              <Button type="submit" color="black">
+                Edit This Posts Picture
+              </Button>
+            </Form>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </>
+  );
+};
 
 export default EditBlogPostPicture;

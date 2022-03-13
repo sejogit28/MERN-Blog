@@ -1,18 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import AuthProvider from './context/AuthContext';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import AuthProvider from "./context/AuthContext";
 
-import 'semantic-ui-css/semantic.min.css';
-//import './App.css'
-
+import "semantic-ui-css/semantic.min.css";
 
 ReactDOM.render(
   <AuthProvider>
     <App />
-  </ AuthProvider>,
-  document.getElementById('root')
+  </AuthProvider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
