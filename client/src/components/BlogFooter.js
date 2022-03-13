@@ -7,6 +7,7 @@ const BlogFooter = () => {
     <Menu
       style={{ marginTop: "50px" }}
       icon="labeled"
+      stackable
       attached="bottom"
       inverted
       size="massive"
