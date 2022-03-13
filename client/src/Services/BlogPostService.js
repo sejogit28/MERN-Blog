@@ -1,6 +1,6 @@
 const BlogPostService = {
-  getBlogPosts: () => {
-    return fetch(
+  getBlogPosts: async () => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/blogList"
     ).then((response) => {
       if (response.status !== 401) {
@@ -10,25 +10,24 @@ const BlogPostService = {
     });
   },
 
-  getBlogPostPagi: (pageNum) => {
-    return fetch(
+  getBlogPostPagi: async (pageNum) => {
+    return await fetch(
       `https://sejomernblogapi.herokuapp.com/blogPost/blogPagi?page=${pageNum}`
     ).then((res) => res.json());
   },
 
-  getBlogPost: (id) => {
-    return fetch("https://sejomernblogapi.herokuapp.com/blogPost/" + id).then(
-      (res) => {
-        if (res.status !== 401) {
-          return res.json().then((data) => data);
-        } else return { message: { msgBody: "UnAuthorized " } };
-      }
-    );
+  getBlogPost: async (id) => {
+    return await fetch(
+      "https://sejomernblogapi.herokuapp.com/blogPost/" + id
+    ).then((res) => {
+      if (res.status !== 401) {
+        return res.json().then((data) => data);
+      } else return { message: { msgBody: "UnAuthorized " } };
+    });
   },
 
-  addBlogPost: (formData) => {
-    console.log(formData);
-    return fetch("https://sejomernblogapi.herokuapp.com/blogPost/add", {
+  addBlogPost: async (formData) => {
+    return await fetch("https://sejomernblogapi.herokuapp.com/blogPost/add", {
       method: "POST",
       body: formData,
     }).then((res) => {
@@ -38,8 +37,8 @@ const BlogPostService = {
     });
   },
 
-  editBlogPostNoPic: (id, editedBlogPost) => {
-    return fetch(
+  editBlogPostNoPic: async (id, editedBlogPost) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/updateNoPic/" + id,
       {
         method: "put",
@@ -55,8 +54,8 @@ const BlogPostService = {
     });
   },
 
-  editBlogPostPic: (id, editedBlogPostPicFormData) => {
-    return fetch(
+  editBlogPostPic: async (id, editedBlogPostPicFormData) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/updatePic/" + id,
       {
         method: "PUT",
@@ -69,8 +68,8 @@ const BlogPostService = {
     });
   },
 
-  deleteBlogPost: (id) => {
-    return fetch(
+  deleteBlogPost: async (id) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/delete/" + id,
       {
         method: "delete",
@@ -86,8 +85,8 @@ const BlogPostService = {
     });
   },
 
-  addComment: (id, newComm) => {
-    return fetch(
+  addComment: async (id, newComm) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/update/" +
         id +
         "/addcomm",
@@ -109,8 +108,8 @@ const BlogPostService = {
     });
   },
 
-  editComment: (id, commId, newCommBody) => {
-    return fetch(
+  editComment: async (id, commId, newCommBody) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/update/" +
         id +
         "/updatecomm/" +
@@ -129,8 +128,8 @@ const BlogPostService = {
     });
   },
 
-  deleteComment: (id, commId) => {
-    return fetch(
+  deleteComment: async (id, commId) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/blogPost/update/" +
         id +
         "/deletecomm/" +

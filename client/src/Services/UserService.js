@@ -1,6 +1,6 @@
 const UserService = {
-  viewUserList: () => {
-    return fetch(
+  viewUserList: async () => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/entryPoint/userList"
     ).then((response) => {
       if (response.status !== 401) {
@@ -9,8 +9,8 @@ const UserService = {
         return { message: { msgError: true, msgBody: "Something Went Wrong" } };
     });
   },
-  viewSingleUser: (userId) => {
-    return fetch(
+  viewSingleUser: async (userId) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/entryPoint/singleUser/" + userId
     ).then((res) => {
       if (res.status !== 401) {
@@ -18,8 +18,8 @@ const UserService = {
       } else return { message: { msgBody: "UnAuthorized " } };
     });
   },
-  editUserProfilePic: (id, editedUserProfilePicFormData) => {
-    return fetch(
+  editUserProfilePic: async (id, editedUserProfilePicFormData) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/entryPoint/updateUserPic/" + id,
       {
         method: "PUT",
@@ -31,8 +31,8 @@ const UserService = {
       } else return { message: { msgBody: "UnAuthorized " }, msgError: true };
     });
   },
-  editUserBio: (id, editedUserBio) => {
-    return fetch(
+  editUserBio: async (id, editedUserBio) => {
+    return await fetch(
       "https://sejomernblogapi.herokuapp.com/entryPoint/updateUserBio/" + id,
       {
         method: "PUT",
