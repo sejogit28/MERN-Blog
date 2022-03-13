@@ -6,6 +6,7 @@ import BlogNavBar from "./components/BlogNavBar";
 import BlogFooter from "./components/BlogFooter";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import BlogMainPage from "./components/BlogMainPage";
 import BlogSearchPage from "./components/BlogSearchPage";
 import BlogPostSinglePage from "./components/BlogPostPage";
 import EditBlogPostPage from "./components/EditBlogPost";
@@ -25,6 +26,7 @@ function App() {
     <Router>
       <BlogNavBar />
       <Container style={{ marginTop: "30px", marginBottom: "170px" }}>
+        <Route exact path="/" component={BlogMainPage} />
         <Route exact path="/Search" component={BlogSearchPage} />
         <Route exact path="/posts/:id" component={BlogPostSinglePage} />
         <PrivateRoute

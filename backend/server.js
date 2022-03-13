@@ -14,7 +14,8 @@ const blogPort = process.env.PORT || 5000;
 blogApp.use(
   cors({
     credentials: true,
-    origin: "https://fervent-darwin-5bcd5e.netlify.app",
+    origin: "http://localhost:3000",
+    //origin: "https://fervent-darwin-5bcd5e.netlify.app",
   })
 );
 
@@ -26,7 +27,8 @@ blogApp.use(cookieParser());
 const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
-    origin: "https://fervent-darwin-5bcd5e.netlify.app",
+    origin: "http://localhost:3000",
+    //origin: "https://fervent-darwin-5bcd5e.netlify.app",
     credentials: true,
   },
 });
