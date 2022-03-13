@@ -19,6 +19,8 @@ import UnPrivateRoute from "./hocs/UnPrivateRoute";
 
 import "semantic-ui-css/semantic.min.css";
 
+//TODO: Re-architecture
+//TODO: Fix nested api calls(use the effect)
 function App() {
   /*Adding "blogPost"(posts) before the path for the BlogPostSinglePage helped
   JS not confuse the BlogPostSinglePage and the admin page*/
