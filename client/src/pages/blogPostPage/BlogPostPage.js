@@ -13,12 +13,12 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
-import { localApiUrl } from "../Services/ServiceUtils";
-import { AuthContext } from "../context/AuthContext";
-import BlogPostService from "../Services/BlogPostService";
-import BlogPostSinglePageComment from "./BlogPostPageComm";
-import BlogPostSinglePageReplyComm from "./BlogPostPageReplyComm";
-import PopupMessage from "./PopupMessage";
+import { localApiUrl } from "../../Services/ServiceUtils";
+import { AuthContext } from "../../context/AuthContext";
+import BlogPostService from "../../Services/BlogPostService";
+import BlogPostSinglePageComment from "./components/BlogPostPageComm";
+import BlogPostSinglePageReplyComm from "./components/BlogPostPageReplyComm";
+import PopupMessage from "../components/PopupMessage";
 
 const BlogPostSinglePage = (props) => {
   const { isAuthenticated, user } = useContext(AuthContext);

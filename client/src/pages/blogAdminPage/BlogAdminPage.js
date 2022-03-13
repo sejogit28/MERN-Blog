@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Card, Button } from "semantic-ui-react";
 
-import BlogPostService from "../Services/BlogPostService";
-import BlogAdminCard from "./BlogAdminPageCard";
+import BlogPostService from "../../Services/BlogPostService";
+import BlogAdminCard from "./components/BlogAdminPageCard";
 
 const BlogAdminPage = () => {
   const [blogPostsList, setBlogPostsList] = useState([]);

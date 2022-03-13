@@ -8,9 +8,9 @@ import "medium-editor/dist/css/medium-editor.css";
 import "medium-editor/dist/css/themes/default.css";
 
 //import MyEditor from '../components/CreateBlogPostEditor';
-import BlogPostService from "../Services/BlogPostService";
-import PopupMessage from "./PopupMessage";
-import tagOptions from "./TagOptions";
+import BlogPostService from "../../Services/BlogPostService";
+import PopupMessage from "../components/PopupMessage";
+import tagOptions from "../components/TagOptions";
 
 const CreateBlogPostPage = (props) => {
   const [title, setTitle] = useState("");

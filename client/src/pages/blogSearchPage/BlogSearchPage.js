@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Card, Input, Button, Placeholder } from "semantic-ui-react";
 
-import BlogPostService from "../Services/BlogPostService";
-import BlogCard from "./BlogMainPageCard";
+import BlogPostService from "../../Services/BlogPostService";
+import BlogCard from "../blogMainPage/components/BlogMainPageCard";
 
 const BlogSearchPage = () => {
   const [loaded, setLoaded] = useState(false);

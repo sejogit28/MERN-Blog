@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import AuthServices from "../Services/AuthServices";
+import AuthServices from "../../Services/AuthServices";
 import Message from "../components/Message";
 import { Grid, Form, Button, Divider } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = (props) => {
   const [user, setUser] = useState({ username: "", password: "" });

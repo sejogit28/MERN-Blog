@@ -8,8 +8,8 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 
-import BlogPostService from "../Services/BlogPostService";
-import BlogCard from "./BlogMainPageCard";
+import BlogPostService from "../../Services/BlogPostService";
+import BlogCard from "./components/BlogMainPageCard";
 
 const BlogMainPage = () => {
   const [loaded, setLoaded] = useState(false);

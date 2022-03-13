@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import AuthServices from "../Services/AuthServices";
-import { AuthContext } from "../context/AuthContext";
+import AuthServices from "../../Services/AuthServices";
+import { AuthContext } from "../../context/AuthContext";
 import { Menu } from "semantic-ui-react";
 
 const BlogNavBar = () => {

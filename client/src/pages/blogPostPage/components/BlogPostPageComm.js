@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Comment, Button, Form } from "semantic-ui-react";
 import moment from "moment";
 
-import BlogPostService from "../Services/BlogPostService";
-import PopupMessage from "./PopupMessage";
+import BlogPostService from "../../../Services/BlogPostService";
+import PopupMessage from "../../components/PopupMessage";
 
 const BlogPostSinglePageComment = (props) => {
   const { socket, blogPost, setBlogPost } = props;

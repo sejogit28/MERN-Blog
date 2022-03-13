@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Form, Button, Card } from "semantic-ui-react";
-import BlogCard from "./BlogMainPageCard";
+import BlogCard from "../blogMainPage/components/BlogMainPageCard";
 
-import PopupMessage from "./PopupMessage";
+import PopupMessage from "../components/PopupMessage";
 
-import BlogPostService from "../Services/BlogPostService";
+import BlogPostService from "../../Services/BlogPostService";
 
 const EditBlogPostPicture = (props) => {
   const [imageUrl, setImageUrl] = useState("");

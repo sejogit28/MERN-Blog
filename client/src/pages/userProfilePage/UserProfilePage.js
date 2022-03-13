@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Grid, Card, Form, Image, Button, Icon } from "semantic-ui-react";
 
-import PopupMessage from "./PopupMessage";
-import { AuthContext } from "../context/AuthContext";
-import UserService from "../Services/UserService";
+import PopupMessage from "../components/PopupMessage";
+import { AuthContext } from "../../context/AuthContext";
+import UserService from "../../Services/UserService";
 
 const UserProfilePage = (props) => {
   const { user } = useContext(AuthContext);
