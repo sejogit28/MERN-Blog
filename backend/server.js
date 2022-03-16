@@ -16,7 +16,7 @@ const blogPort = process.env.PORT || 5000;
 blogApp.use(
   cors({
     credentials: true,
-    origin: localClientUrl,
+    origin: remoteClientUrl,
   })
 );
 
@@ -29,7 +29,7 @@ const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
     credentials: true,
-    origin: localClientUrl,
+    origin: remoteClientUrl,
   },
 });
 
