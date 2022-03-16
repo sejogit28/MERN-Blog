@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 let blogPosts = require("./blogModels/blogPostsModel");
 //var passport = require()
+const localClientUrl = "http://localhost:3000";
+const remoteClientUrl = "https://mern-blog-backend28.herokuapp.com";
 
 require("dotenv").config();
 
@@ -14,10 +16,7 @@ const blogPort = process.env.PORT || 5000;
 blogApp.use(
   cors({
     credentials: true,
-    origin:
-      process.env.NODE_ENV === "production"
-        ? process.env.REMOTE_CLIENT_URL
-        : process.env.LOCAL_CLIENT_URL,
+    origin: localClientUrl,
   })
 );
 
@@ -29,11 +28,8 @@ blogApp.use(cookieParser());
 const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
-    origin:
-      process.env.NODE_ENV === "production"
-        ? process.env.REMOTE_CLIENT_URL
-        : process.env.LOCAL_CLIENT_URL,
     credentials: true,
+    origin: localClientUrl,
   },
 });
 
