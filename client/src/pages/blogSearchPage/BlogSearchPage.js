@@ -44,8 +44,7 @@ const BlogSearchPage = () => {
   const filterByTag = (tagName) => {
     setFilteredPosts(
       blogPosts.filter((tagPost) => {
-        /*For every blogPost, filter it if its tags Array includes the tagName*/
-
+        /* For every blogPost, filter it out if its tags Array doesn't include the tagName */
         const filteredTags = tagPost.tags.includes(tagName);
         console.log(filteredTags);
         return filteredTags;
