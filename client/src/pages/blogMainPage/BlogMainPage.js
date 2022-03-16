@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Card,
-  Pagination,
-  Divider,
-  Segment,
-  Placeholder,
-} from "semantic-ui-react";
+import { Grid, Pagination, Segment, Placeholder } from "semantic-ui-react";
 
 import BlogPostService from "../../Services/BlogPostService";
-import BlogCard from "./components/BlogMainPageCard";
+import BlogCard from "../components/BlogArticleCard";
 
 const BlogMainPage = () => {
   const [loaded, setLoaded] = useState(false);
@@ -56,32 +49,27 @@ const BlogMainPage = () => {
         <h1>Welcome to Coding Mind!</h1>
       </Grid.Row>
       <Grid.Row>
-        <Pagination
-          onPageChange={onPagiChange}
-          activePage={pageNumber}
-          totalPages={numberOfPages}
-        />
+        <Grid.Column>
+          <Pagination
+            onPageChange={onPagiChange}
+            activePage={pageNumber}
+            totalPages={numberOfPages}
+          />
+        </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
-        <Card.Group centered itemsPerRow={2}>
-          {blogPosts.map((blogpost) => {
-            return (
-              <React.Fragment key={blogpost._id}>
-                <BlogCard fluidTrue={true} blogpost={blogpost} />
-
-                <Divider></Divider>
-              </React.Fragment>
-            );
-          })}
-        </Card.Group>
-      </Grid.Row>
-      <Grid.Row>
-        <Pagination
-          onPageChange={onPagiChange}
-          activePage={pageNumber}
-          totalP2ages={numberOfPages}
-        />
-      </Grid.Row>
+      <Grid
+        padded="horizontally"
+        columns={3}
+        style={{ paddingLeft: "0", paddingRight: "0" }}
+      >
+        {blogPosts.map((blogpost) => {
+          return (
+            <Grid.Column key={blogpost._id} computer={8} tablet={8} mobile={16}>
+              <BlogCard fluidTrue={true} blogpost={blogpost} />
+            </Grid.Column>
+          );
+        })}
+      </Grid>
     </Grid>
   ) : (
     <Grid columns={2} stackable>

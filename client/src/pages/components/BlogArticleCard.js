@@ -6,7 +6,12 @@ const BlogCard = (props) => {
   return (
     <>
       {props.blogpost.createdAt && (
-        <Card raised fluid={props.fluidTrue} key={props.blogpost._id}>
+        <Card
+          raised
+          fluid={props.fluidTrue}
+          key={props.blogpost._id}
+          style={{ minHeight: "35.5rem" }}
+        >
           <Image
             as={Link}
             to={"/posts/" + props.blogpost._id}

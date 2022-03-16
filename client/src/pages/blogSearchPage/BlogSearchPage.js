@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Card, Input, Button, Placeholder } from "semantic-ui-react";
+import {
+  Grid,
+  Card,
+  Input,
+  Button,
+  Placeholder,
+  Dropdown,
+} from "semantic-ui-react";
 
+import tagOptions from "../components/TagOptions";
 import BlogPostService from "../../Services/BlogPostService";
-import BlogCard from "../blogMainPage/components/BlogMainPageCard";
+import BlogCard from "../components/BlogArticleCard";
 
 const BlogSearchPage = () => {
   const [loaded, setLoaded] = useState(false);
@@ -73,50 +81,71 @@ const BlogSearchPage = () => {
 
   return loaded ? (
     <Grid container columns="equal">
-      <Grid.Row centered>
-        <h1>Search</h1>
+      <Grid.Row>
+        <Grid.Column>
+          <h1>Search</h1>
+        </Grid.Column>
       </Grid.Row>
 
-      <Grid.Row centered>
-        <Input
-          icon="search"
-          placeholder="Search by title..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Grid.Row>
-      <Grid.Row centered>
-        <Button.Group>
-          <Button
-            onClick={() => {
-              returnAllPosts();
-            }}
+      <Grid.Row>
+        <Grid.Column computer={5} mobile={12}>
+          <Dropdown
+            text="Filter"
+            icon="filter"
+            floating
+            labeled
+            button
+            className="icon"
+            scrolling
           >
-            All
-          </Button>
-          <Button onClick={() => filterByTag("Exercise")}>Exercise</Button>
-          <Button onClick={() => filterByTag("Memory")}>Memory</Button>
-          <Button onClick={() => filterByTag("Discussion")}>Discussion</Button>
-          <Button onClick={() => filterByTag("Neuroplasticity")}>
-            Neuroplasticity
-          </Button>
-        </Button.Group>
-      </Grid.Row>
-      <Grid.Row centered>
-        <Button.Group>
-          <Button onClick={() => filterByTag("Sleep")}>Sleep</Button>
-          <Button onClick={() => filterByTag("Learning")}>Learning</Button>
-          <Button onClick={() => filterByTag("Emotion")}>Emotion</Button>
-          <Button onClick={() => filterByTag("Coding")}>Coding</Button>
-          <Button onClick={() => filterByTag("Nutrition")}>Nutrition</Button>
-        </Button.Group>
+            <Dropdown.Menu>
+              <Dropdown.Header icon="tags" content="Filter by tag" />
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={() => returnAllPosts()}>
+                Un-filter
+              </Dropdown.Item>
+              {tagOptions.map((tag) => {
+                return (
+                  <Dropdown.Item key={tag} onClick={() => filterByTag(tag)}>
+                    {tag}
+                  </Dropdown.Item>
+                );
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Card.Group centered itemsPerRow={3}>
-          {filteredPosts.reverse().map((blogpost) => {
-            return <BlogCard key={blogpost._id} blogpost={blogpost} />;
-          })}
-        </Card.Group>
+        <Grid.Column computer={4} mobile={12}>
+          <Input
+            fluid
+            icon="search"
+            placeholder="Search by title..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Grid.Column>
       </Grid.Row>
+      <Grid
+        padded="horizontally"
+        columns={3}
+        container
+        style={{ paddingLeft: "0", paddingRight: "0" }}
+      >
+        {filteredPosts.reverse().map((blogpost) => {
+          return (
+            <>
+              <Grid.Column
+                key={blogpost._id}
+                computer={5}
+                tablet={8}
+                mobile={16}
+              >
+                <BlogCard key={blogpost._id} blogpost={blogpost} />
+              </Grid.Column>
+            </>
+          );
+        })}
+      </Grid>
     </Grid>
   ) : (
     <Card.Group doubling itemsPerRow={3} stackable>

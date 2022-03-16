@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Form, Button, Card } from "semantic-ui-react";
-import BlogCard from "../blogMainPage/components/BlogMainPageCard";
+import BlogCard from "../components/BlogArticleCard";
 
 import PopupMessage from "../components/PopupMessage";
 
