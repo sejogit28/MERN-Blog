@@ -4,8 +4,8 @@ let blogPosts = require("../blogModels/blogPostsModel");
 const upload = require("../utils/multer");
 const cloudinary = require("../utils/cloudinary");
 
-router.get("/blogList", (req, res) => {
-  blogPosts
+router.get("/blogList", async (req, res) => {
+  await blogPosts
     .find()
     .then((posts) => res.json(posts))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -26,8 +26,8 @@ router.get("/blogPagi", async (req, res) => {
   });
 });
 
-router.get("/:id", (req, res) => {
-  blogPosts
+router.get("/:id", async (req, res) => {
+  await blogPosts
     .findById(req.params.id)
     .then((singleBlogPost) => res.json(singleBlogPost))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -104,8 +104,8 @@ router.put(
   }
 );
 
-router.put("/updateNoPic/:postId", (req, res) => {
-  blogPosts
+router.put("/updateNoPic/:postId", async (req, res) => {
+  await blogPosts
     .findById(req.params.postId)
     .then((bPost) => {
       (bPost.title = req.body.title),
@@ -129,8 +129,8 @@ router.put("/updateNoPic/:postId", (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.delete("/delete/:postId", (req, res) => {
-  blogPosts
+router.delete("/delete/:postId", async (req, res) => {
+  await blogPosts
     .findByIdAndDelete(req.params.postId)
     .then(async (deletedBlogPost) => {
       await cloudinary.uploader.destroy(deletedBlogPost.cloudinaryId);
@@ -141,8 +141,8 @@ router.delete("/delete/:postId", (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.put("/update/:postId/addcomm", (req, res) => {
-  blogPosts
+router.put("/update/:postId/addcomm", async (req, res) => {
+  await blogPosts
     .findById(req.params.postId)
     .then((bPost) => {
       const username = req.body.username;
@@ -175,8 +175,8 @@ router.put("/update/:postId/addcomm", (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.put("/update/:postId/replyToComm/:commId", (req, res) => {
-  blogPosts
+router.put("/update/:postId/replyToComm/:commId", async (req, res) => {
+  await blogPosts
     .findById(req.params.postId)
     .then((bPost) => {
       const username = req.body.username;
@@ -208,8 +208,8 @@ router.put("/update/:postId/replyToComm/:commId", (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.put("/update/:postId/updateComm/:commId", (req, res) => {
-  blogPosts
+router.put("/update/:postId/updateComm/:commId", async (req, res) => {
+  await blogPosts
     .findById(req.params.postId)
     .then((bPost) => {
       var currComm = bPost.comments.find((o) => o._id == req.params.commId);
