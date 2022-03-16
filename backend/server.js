@@ -3,9 +3,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 let blogPosts = require("./blogModels/blogPostsModel");
-//var passport = require()
 const localClientUrl = "http://localhost:3000";
-const remoteClientUrl = "https://mern-blog-backend28.herokuapp.com";
+const remoteClientUrl = "https://tender-bohr-ca754b.netlify.app";
 
 require("dotenv").config();
 
@@ -21,10 +20,8 @@ blogApp.use(
 );
 
 blogApp.use(express.json());
-//blogApp.enable('trust proxy');
 blogApp.use(cookieParser());
 
-//const http = require('http').Server(blogApp);
 const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
