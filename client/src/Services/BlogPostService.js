@@ -18,7 +18,14 @@ const BlogPostService = {
   getBlogPostPagi: async (pageNum) => {
     return await fetch(
       `${remoteApiUrl}/${routeName}/blogPagi?page=${pageNum}`
-    ).then((res) => res.json());
+    ).then((response) => {
+      if (response.status !== 401) {
+        return response.json().then((data) => data);
+      } else
+        return {
+          message: { msgError: true, msgBody: "Something Went Wrong" },
+        };
+    });
   },
 
   getBlogPost: async (id) => {
