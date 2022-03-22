@@ -3,8 +3,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 let blogPosts = require("./blogModels/blogPostsModel");
-const localClientUrl = "http://localhost:3000";
-const remoteClientUrl = "https://tender-bohr-ca754b.netlify.app";
 
 require("dotenv").config();
 
@@ -15,7 +13,7 @@ const blogPort = process.env.PORT || 5000;
 blogApp.use(
   cors({
     credentials: true,
-    origin: remoteClientUrl,
+    origin: "https://tender-bohr-ca754b.netlify.app",
   })
 );
 
@@ -26,7 +24,7 @@ const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
     credentials: true,
-    origin: remoteClientUrl,
+    origin: "https://tender-bohr-ca754b.netlify.app",
   },
 });
 
