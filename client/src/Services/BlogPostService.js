@@ -1,4 +1,4 @@
-import { remoteApiUrl } from "./ServiceUtils";
+import { remoteApiUrl, remoteClientUrl } from "./ServiceUtils";
 const routeName = "blogPost";
 
 const BlogPostService = {
