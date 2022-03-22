@@ -72,7 +72,6 @@ const AuthService = {
       credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": remoteClientUrl,
-
         "Access-Control-Allow-Credentials": true,
         "Content-Type": "application/json",
       },
