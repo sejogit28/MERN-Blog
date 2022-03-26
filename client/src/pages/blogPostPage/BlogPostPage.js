@@ -13,7 +13,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
-import { remoteApiUrl } from "../../Services/ServiceUtils";
+import { localApiUrl } from "../../Services/ServiceUtils";
 import { AuthContext } from "../../context/AuthContext";
 import BlogPostService from "../../Services/BlogPostService";
 import BlogPostSinglePageComment from "./components/BlogPostPageComm";
@@ -64,7 +64,7 @@ const BlogPostSinglePage = (props) => {
       setLoaded(true);
     });
 
-    const socket = io(`${remoteApiUrl}/`, {
+    const socket = io(`${localApiUrl}/`, {
       withCredentials: true,
     });
     /* in this video: https://youtu.be/tBKUxOdK5Q8?t=2633 a global state was used to 

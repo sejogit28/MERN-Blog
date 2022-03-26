@@ -1,9 +1,9 @@
-import { remoteApiUrl } from "./ServiceUtils";
+import { localApiUrl } from "./ServiceUtils";
 const routeName = "entryPoint";
 
 const UserService = {
   viewUserList: async () => {
-    return await fetch(`${remoteApiUrl}/${routeName}/userList`).then(
+    return await fetch(`${localApiUrl}/${routeName}/userList`).then(
       (response) => {
         if (response.status !== 401) {
           return response.json().then((data) => data);
@@ -15,16 +15,16 @@ const UserService = {
     );
   },
   viewSingleUser: async (userId) => {
-    return await fetch(
-      `${remoteApiUrl}/${routeName}/singleUser/` + userId
-    ).then((res) => {
-      if (res.status !== 401) {
-        return res.json().then((data) => data);
-      } else return { message: { msgBody: "UnAuthorized " } };
-    });
+    return await fetch(`${localApiUrl}/${routeName}/singleUser/` + userId).then(
+      (res) => {
+        if (res.status !== 401) {
+          return res.json().then((data) => data);
+        } else return { message: { msgBody: "UnAuthorized " } };
+      }
+    );
   },
   editUserProfilePic: async (id, editedUserProfilePicFormData) => {
-    return await fetch(`${remoteApiUrl}/${routeName}/updateUserPic/` + id, {
+    return await fetch(`${localApiUrl}/${routeName}/updateUserPic/` + id, {
       method: "PUT",
       body: editedUserProfilePicFormData,
     }).then((res) => {
@@ -34,7 +34,7 @@ const UserService = {
     });
   },
   editUserBio: async (id, editedUserBio) => {
-    return await fetch(`${remoteApiUrl}/${routeName}/updateUserBio/` + id, {
+    return await fetch(`${localApiUrl}/${routeName}/updateUserBio/` + id, {
       method: "PUT",
       body: JSON.stringify(editedUserBio),
       headers: {

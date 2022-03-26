@@ -17,8 +17,8 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
           );
         }
 
+        // Means the client is authenticated and they have the correct role to access the page
         if (!roles.includes(user.role)) {
-          // Means the client is authenticated and they have the correct role to access the page
           return (
             <Redirect to={{ pathname: "/", state: { from: props.location } }} />
           );
