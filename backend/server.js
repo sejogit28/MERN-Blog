@@ -14,7 +14,6 @@ blogApp.use(
   cors({
     credentials: true,
     origin: "https://tender-bohr-ca754b.netlify.app",
-    origin: process.env.REMOTE_CLIENT,
   })
 );
 
