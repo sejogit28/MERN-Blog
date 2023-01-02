@@ -13,7 +13,7 @@ const blogPort = process.env.PORT || 5000;
 blogApp.use(
   cors({
     credentials: true,
-    origin: "https://tender-bohr-ca754b.netlify.app",
+    origin: process.env.LOCAL_CLIENT,
   })
 );
 
@@ -24,7 +24,7 @@ const http = require("http").createServer(blogApp);
 const io = require("socket.io")(http, {
   cors: {
     credentials: true,
-    origin: "https://tender-bohr-ca754b.netlify.app",
+    origin: process.env.LOCAL_CLIENT,
   },
 });
 

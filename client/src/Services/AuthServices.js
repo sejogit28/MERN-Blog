@@ -1,21 +1,16 @@
-import {
-  localApiUrl,
-  localClientUrl,
-  remoteApiUrl,
-  remoteClientUrl,
-} from "./ServiceUtils";
+import { localApiUrl, localClientUrl } from "./ServiceUtils";
 const routeName = "entryPoint";
 
 const AuthService = {
   login: async (user) => {
-    return await fetch(`${remoteApiUrl}/${routeName}/login`, {
+    return await fetch(`${localApiUrl}/${routeName}/login`, {
       method: "post",
       credentials: "include",
       body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Origin": remoteClientUrl,
+        "Access-Control-Allow-Origin": localClientUrl,
       },
     }).then((res) => {
       if (res.status !== 401) return res.json().then((data) => data);
@@ -24,14 +19,14 @@ const AuthService = {
   },
 
   googleLogin: async (info) => {
-    return await fetch(`${remoteApiUrl}/${routeName}/googlelogin`, {
+    return await fetch(`${localApiUrl}/${routeName}/googlelogin`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(info),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Origin": remoteClientUrl,
+        "Access-Control-Allow-Origin": localClientUrl,
       },
     }).then((res) => {
       if (res.status !== 401) return res.json().then((data) => data);
@@ -40,12 +35,12 @@ const AuthService = {
   },
 
   register: async (formData) => {
-    return await fetch(`${remoteApiUrl}/${routeName}/register`, {
+    return await fetch(`${localApiUrl}/${routeName}/register`, {
       method: "POST",
 
       body: formData,
       headers: {
-        "Access-Control-Allow-Origin": remoteClientUrl,
+        "Access-Control-Allow-Origin": localClientUrl,
       },
     }).then((res) => {
       if (res.status !== 401) {
@@ -55,11 +50,11 @@ const AuthService = {
   },
 
   logout: async () => {
-    return await fetch(`${remoteApiUrl}/${routeName}/logout`, {
+    return await fetch(`${localApiUrl}/${routeName}/logout`, {
       credentials: "include",
       headers: {
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Origin": remoteClientUrl,
+        "Access-Control-Allow-Origin": localClientUrl,
       },
     })
       .then((res) => res.json())
@@ -67,11 +62,11 @@ const AuthService = {
   },
 
   isAuthenticated: async () => {
-    return await fetch(`${remoteApiUrl}/${routeName}/authenticated`, {
+    return await fetch(`${localApiUrl}/${routeName}/authenticated`, {
       method: "GET",
       credentials: "include",
       headers: {
-        "Access-Control-Allow-Origin": remoteClientUrl,
+        "Access-Control-Allow-Origin": localClientUrl,
         "Access-Control-Allow-Credentials": true,
         "Content-Type": "application/json",
       },

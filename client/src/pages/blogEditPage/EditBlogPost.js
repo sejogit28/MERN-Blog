@@ -59,12 +59,6 @@ const EditBlogPostPage = (props) => {
   const onCheckBoxChange = (e) => {
     const checkedVal = e.target.name;
 
-    /* function clearTags(tagsArr, value) {
-      return tagsArr.filter(function (tag) {
-        return tag !== value;
-      });
-    } */
-
     if (e.target.checked) {
       editedBlogPost.tags.push(checkedVal);
       setEditedBlogPost({ ...editedBlogPost, ...editedBlogPost.tags });
