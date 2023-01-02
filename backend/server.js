@@ -14,6 +14,7 @@ blogApp.use(
   cors({
     credentials: true,
     origin: "https://tender-bohr-ca754b.netlify.app",
+    origin: process.env.REMOTE_CLIENT,
   })
 );
 
@@ -25,6 +26,7 @@ const io = require("socket.io")(http, {
   cors: {
     credentials: true,
     origin: "https://tender-bohr-ca754b.netlify.app",
+
   },
 });
 

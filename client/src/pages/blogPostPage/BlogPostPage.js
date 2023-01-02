@@ -13,7 +13,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
-import { remoteApiUrl } from "../../Services/ServiceUtils";
+import { localApiUrl, remoteApiUrl } from "../../Services/ServiceUtils";
 import { AuthContext } from "../../context/AuthContext";
 import BlogPostService from "../../Services/BlogPostService";
 import BlogPostSinglePageComment from "./components/BlogPostPageComm";

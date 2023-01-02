@@ -1,4 +1,4 @@
-import { remoteApiUrl } from "./ServiceUtils";
+import { localApiUrl, remoteApiUrl } from "./ServiceUtils";
 const routeName = "entryPoint";
 
 const UserService = {

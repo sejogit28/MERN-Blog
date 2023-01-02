@@ -19,8 +19,6 @@ import UnPrivateRoute from "./hocs/UnPrivateRoute";
 
 import "semantic-ui-css/semantic.min.css";
 
-//TODO: Fix nested api calls?(use the effect)
-
 function App() {
   return (
     <Router>

@@ -1,4 +1,4 @@
-import { remoteApiUrl } from "./ServiceUtils";
+import { localApiUrl, remoteApiUrl } from "./ServiceUtils";
 const routeName = "blogPost";
 
 const BlogPostService = {
@@ -18,14 +18,14 @@ const BlogPostService = {
   getBlogPostPagi: async (pageNum) => {
     return await fetch(
       `${remoteApiUrl}/${routeName}/blogPagi?page=${pageNum}`
-    ).then(((response) => {
-        if (response.status !== 401) {
-          return response.json().then((data) => data);
-        } else
-          return {
-            message: { msgError: true, msgBody: "Something Went Wrong" },
-          };
-      });
+    ).then((response) => {
+      if (response.status !== 401) {
+        return response.json().then((data) => data);
+      } else
+        return {
+          message: { msgError: true, msgBody: "Something Went Wrong" },
+        };
+    });
   },
 
   getBlogPost: async (id) => {
@@ -87,20 +87,13 @@ const BlogPostService = {
   },
 
   addComment: async (id, newComm) => {
-    return await fetch(
-      `${remoteApiUrl}/${routeName}/update/${id}/addcomm`,
-      /*It would appear tha that if you don't put the first "/" 
-            (/blogPost/update as opposed to blogPost/update)react assumes 
-            that you want everything to the left of the url that is in the 
-            browser window "posts/blogPost" example*/
-      {
-        method: "put",
-        body: JSON.stringify(newComm),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((res) => {
+    return await fetch(`${remoteApiUrl}/${routeName}/update/${id}/addcomm`, {
+      method: "put",
+      body: JSON.stringify(newComm),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
       if (res.status !== 401) {
         return res.json().then((data) => data);
       } else return { message: { msgBody: "UnAuthorized " }, msgError: true };
